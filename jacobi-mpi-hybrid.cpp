@@ -29,6 +29,9 @@ void box_initial(int qq, box b){
   }
 }
 
+
+
+
 int binomialCoeff(int n, int k)
 {
     // Base Cases
@@ -64,11 +67,13 @@ double compute_residual(double *lu, int lN, double invhsq) {
 
 
 int main(int argc, char * argv[]) {
-  int mpirank, i, p, N, s, iter, max_iters;
-  MPI_Status status, status1;
+  int rank, i, p, N, s, iter, max_iters;
+  MPI_Status status;
+  MPI_Request request_outh, request_inh;
+  MPI_Request request_outv, request_inv;
 
   MPI_Init(&argc, &argv);
-  MPI_Comm_rank(MPI_COMM_WORLD, &mpirank);
+  MPI_Comm_rank(MPI_COMM_WORLD, &rank);
   MPI_Comm_size(MPI_COMM_WORLD, &p);
 
   /* get name of host running MPI process */
@@ -116,6 +121,8 @@ int main(int argc, char * argv[]) {
   int b_c;
   int start = (pow(4,Nl-1)-1)/3;
 
+  // Compute Multipole for finest level
+
   #pragma omp parallel for{
     for(int i=0;i<n;i++){
       x_c = x[i]/par;
@@ -135,6 +142,8 @@ int main(int argc, char * argv[]) {
   double z0;
   double startchid;
 
+  // Multipole to Multipole
+
   #pragma omp parallel for{
     for(int i = Nl-2;i>=0;i--){
       dim = pow(2,i); 
@@ -149,7 +158,7 @@ int main(int argc, char * argv[]) {
         for (int k=0;k<4;k++){
           grid[start+j]->Q += grid[startchid+j*4+k]->Q;
           for (int l =0;l<q;l++){
-            grid[start+j]->local += (-1.0*grid[startchid+j*4+k]->Q*pow(z0,l+1)/(l+1));
+            grid[start+j]->local[l] += (-1.0*grid[startchid+j*4+k]->Q*pow(z0,l+1)/(l+1));
             for(int o=0;o<=l;o++){
               grid[start+j]->local[l] += binomialCoeff(l,o)*grid[startchid+j*4+k]->local[o]*pow(z0,l-k);
             }
@@ -161,68 +170,321 @@ int main(int argc, char * argv[]) {
     }
   }
 
-  
+  // Multipole to Local
+
+  int dimpar=0;
+  int childx, childy,stss, x_i, y_i, boxid;
+  int x1,x2,x3,y1,y2,y3;
+
+  #pragma omp parallel for{
+    for(int i = 2; i<=Nl;i++){
+      start = (pow(4,i-1)-1)/3;
+      dim = pow(2,i);
+      dimpar = dim/2;
+      dimsq = dim*dim;
+      double* sendh = (double*) malloc(dim * 2 * (q+1) * sizeof(double)); 
+      double* sendv = (double*) malloc(dim * 2 * (q+1) * sizeof(double));
+      double* rech = (double*) malloc(dim * 2 * (q+1) * sizeof(double)); 
+      double* recv = (double*) malloc(dim * 2 * (q+1) * sizeof(double));
+
+
+      
+      MPI_Barrier(MPI_COMM_WORLD);
+
+      for (int j=0;i<dim;j++){
+        for (int k=0; k<dim;k++){
+          x_i = j;
+          y_i = k;
+          boxid = start+x_i+y_i*dim;
+          childx = x_i % 2;
+          childy = y_i % 2;
+          
+          MPI_Irecv(rech, dim * 2 * (q+1), MPI_DOUBLE, mpirank+1, 123, MPI_COMM_WORLD, &request_inh);
+          MPI_Isend(&(lunew[lN]), 1, MPI_DOUBLE, mpirank+1, 124, MPI_COMM_WORLD, &request_out);
+
+          if(rank = 0){
+            MPI_Irecv(rech, dim * 2 * (q+1), MPI_DOUBLE, 1, 123, MPI_COMM_WORLD, &request_inh);
+            MPI_Irecv(recv, dim * 2 * (q+1), MPI_DOUBLE, 2, 124, MPI_COMM_WORLD, &request_inv);
+          }
+          if(rank = 1 ){
+            MPI_Irecv(rech, dim * 2 * (q+1), MPI_DOUBLE, 0, 123, MPI_COMM_WORLD, &request_inh);
+            MPI_Irecv(recv, dim * 2 * (q+1), MPI_DOUBLE, 3, 124, MPI_COMM_WORLD, &request_inv);
+          }
+          if(rank =2){
+            MPI_Irecv(rech, dim * 2 * (q+1), MPI_DOUBLE, 3, 123, MPI_COMM_WORLD, &request_inh);
+            MPI_Irecv(recv, dim * 2 * (q+1), MPI_DOUBLE, 0, 124, MPI_COMM_WORLD, &request_inv);
+          }
+          if(rank =3){
+            MPI_Irecv(rech, dim * 2 * (q+1), MPI_DOUBLE, 2, 123, MPI_COMM_WORLD, &request_inh);
+            MPI_Irecv(recv, dim * 2 * (q+1), MPI_DOUBLE, 1, 124, MPI_COMM_WORLD, &request_inv);
+          }
+
+            if (x_i/2 == dimpar - 1){
+              stss = childx + y_i*2;
+              sendh[stss] = grid[boxid]->Q; 
+              for(int ii = 1;ii<=q;ii++){
+                sendh[stss+ii] = grid[boxid]->multipole[ii-1];
+              }
+            }
+            if (y_i/2 == dimpar - 1){
+              stss = x_i + childy*2;
+              sendh[stss] = grid[boxid]->Q; 
+              for(int ii = 1;ii<=q;ii++){
+                sendv[stss+ii] = grid[boxid]->multipole[ii-1];
+              }
+            }
+
+          if(rank = 0){
+            MPI_Isend(sendh,dim * 2 * (q+1), MPI_DOUBLE, 1, 123, MPI_COMM_WORLD, &request_outh);
+            MPI_Isend(sendv, dim * 2 * (q+1), MPI_DOUBLE, 2, 124, MPI_COMM_WORLD, &request_outv);
+          }
+          if(rank = 1 ){
+            MPI_Isend(sendh,dim * 2 * (q+1), MPI_DOUBLE, 0, 123, MPI_COMM_WORLD, &request_outh);
+            MPI_Isend(sendv, dim * 2 * (q+1), MPI_DOUBLE, 3, 124, MPI_COMM_WORLD, &request_outv);
+          }
+          if(rank =2){
+            MPI_Isend(sendh,dim * 2 * (q+1), MPI_DOUBLE, 3, 123, MPI_COMM_WORLD, &request_outh);
+            MPI_Isend(sendv, dim * 2 * (q+1), MPI_DOUBLE, 0, 124, MPI_COMM_WORLD, &request_outv);
+          }
+          if(rank =3){
+           MPI_Isend(sendh,dim * 2 * (q+1), MPI_DOUBLE, 2, 123, MPI_COMM_WORLD, &request_outh);
+            MPI_Isend(sendv, dim * 2 * (q+1), MPI_DOUBLE, 1, 124, MPI_COMM_WORLD, &request_outv);
+          }
+          
+
+          if (childx == 0){
+            if (childy == 0){
+              y1 = j-2;
+              y2 = j+2;
+              y3 = j+3;
+              x1 = x-2;
+              x2 = x+2;
+              x3 = x+3;
+            }
+            else{
+              y1 = j-3;
+              y2 = j-2;
+              y3 = j+3;
+              x1 = x-2;
+              x2 = x+2;
+              x3 = x+3;
+            }
+          }
+          else{
+            if (childy == 0){
+              y1 = j-2;
+              y2 = j+2;
+              y3 = j+3;
+              x1 = x-3;
+              x2 = x-2;
+              x3 = x+3;
+            }
+            else{
+              y1 = j-3;
+              y2 = j-2;
+              y3 = j+3;
+              x1 = x-3;
+              x2 = x-2;
+              x3 = x+3;
+            }
+          }
 
 
 
-  /* compute number of unknowns handled by each process */
-  
-  
-  /* timing */
-  MPI_Barrier(MPI_COMM_WORLD);
-  double tt = MPI_Wtime();
+          if (y1 >=0){
+                for (int iii = i-2;i<=i+3;i++){
+                  if (iii>=0 && iii<dim){
+
+                  }
+                }
+              }
+              if (y2 >=0){
+                for (int iii = i-2;i<=i+3;i++){
+                  if (iii>=0 && iii<dim){
+
+                  }
+                }
+              }
+              if (y3 >=0){
+                for (int iii = i-2;i<=i+3;i++){
+                  if (iii>=0 && iii<dim){
+
+                  }
+                }
+              }
+              if (x1 >=0){
+                for (int jjj=j-1;jjj<=j+1;jjj+1){
+
+                }
+              }
+              if (x2 >=0){
+                for (int jjj=j-1;jjj<=j+1;jjj+1){
+                  
+                }
+              }
+              if (x3 >=0){
+                for (int jjj=j-1;jjj<=j+1;jjj+1){
+                  
+                }
+              }
+
+          MPI_Wait(&request_outh, &status);
+          MPI_Wait(&request_inh, &status);
+          MPI_Wait(&request_outv, &status);
+          MPI_Wait(&request_inv, &status);
+          int x_h,y_h,x_v,y_v;
+
+          if(rank = 0){
+            x1 = dim-2;
+            x2 = dim-1;
+            y1 = dim-2;
+            y2 = dim-1;
+          }
+          if(rank = 1 ){
+            x1 = 0;
+            x2 = 1;
+            y1 = dim-2;
+            y2 = dim-1;
+          }
+          if(rank =2){
+            x1 = dim-2;
+            x2 = dim-1;
+            y1 = 0;
+            y2 = 1;
+          }
+          if(rank =3){
+            x1 = 0;
+            x2 = 1;
+            y1 = 0;
+            y2 = 1;
+          }
+
+          int parid, fir;
+
+          for ( x_h =0;x_h<2;x_h++){
+            for (y_h = =;y_h<dim;y_h++){
+              if (x_h == 0){
+
+                // only update x1
+                parid = y_h/2;
+
+                if(parid-1>=0){
+                  fir = 2*(parid-1);
+
+
+                }
+                fir = 2*parid;
+
+                if(parid+1<dim){
+                  fir = 2*(parid+1);
+                }
+              }
+              else{
+
+                // only update x1, x2
+                parid = y_h/2;
+
+                if(parid-1>=0){
+                  fir = 2*(parid-1);
+
+
+                }
+                fir = 2*parid;
+
+
+                if(parid+1<dim){
+                  fir = 2*(parid+1);
+                }
+              }
+            }
+          }
+
+          for ( x_v =0;x_v<dim;x_v++){
+            for (y_v = =;y_v<2;y_v++){
+              if (y_v == 0){
+
+                // only update y1
+                parid = x_v/2;
+
+                if(parid-1>=0){
+                  fir = 2*(parid-1);
+
+
+                }
+                fir = 2*parid;
+
+                if(parid+1<dim){
+                  fir = 2*(parid+1);
+                }
+              }
+              else{
+                // only update y1, y2
+                parid = x_v/2;
+
+                if(parid-1>=0){
+                  fir = 2*(parid-1);
+
+
+                }
+                fir = 2*parid;
+
+
+                if(parid+1<dim){
+                  fir = 2*(parid+1);
+
+                }
+              }
+            }
+          }
+
+        
+          
 
 
 
-  /* Allocation of vectors, including left/upper and right/lower ghost points */
-  double * lu    = (double *) calloc(sizeof(double), lN + 2);
-  double * lunew = (double *) calloc(sizeof(double), lN + 2);
-  double * lutemp;
-
-  double h = 1.0 / (N + 1);
-  double hsq = h * h;
-  double invhsq = 1./hsq;
-  double gres, gres0, tol = 1e-5;
-
-  /* initial residual */
-  gres0 = compute_residual(lu, lN, invhsq);
-  gres = gres0;
-
-  for (iter = 0; iter < max_iters && gres/gres0 > tol; iter++) {
-
-#pragma omp parallel for default(none) shared(lN,lunew,lu,hsq)
-    /* Jacobi step for local points */
-    for (i = 1; i <= lN; i++){
-      lunew[i]  = 0.5 * (hsq + lu[i - 1] + lu[i + 1]);
-    }
-
-    /* communicate ghost values */
-    if (mpirank < p - 1) {
-      /* If not the last process, send/recv bdry values to the right */
-      MPI_Send(&(lunew[lN]), 1, MPI_DOUBLE, mpirank+1, 124, MPI_COMM_WORLD);
-      MPI_Recv(&(lunew[lN+1]), 1, MPI_DOUBLE, mpirank+1, 123, MPI_COMM_WORLD, &status);
-    }
-    if (mpirank > 0) {
-      /* If not the first process, send/recv bdry values to the left */
-      MPI_Send(&(lunew[1]), 1, MPI_DOUBLE, mpirank-1, 123, MPI_COMM_WORLD);
-      MPI_Recv(&(lunew[0]), 1, MPI_DOUBLE, mpirank-1, 124, MPI_COMM_WORLD, &status1);
-    }
-
-
-    /* copy newu to u using pointer flipping */
-    lutemp = lu; lu = lunew; lunew = lutemp;
-    if (0 == (iter % 10)) {
-      gres = compute_residual(lu, lN, invhsq);
-      if (0 == mpirank) {
-	printf("Iter %d: Residual: %g\n", iter, gres);
+        } 
       }
+
+      free(sendh);
+      free(sendv);
+      free(rech);
+      free(recv);
+
+      
     }
   }
 
-  /* Clean up */
-  free(lu);
-  free(lunew);
 
+  // Local to Local
+  start = 0;
+  startchid = 0;
+
+  #pragma omp parallel for{
+    for(int i = 0;i<Nl>;i++){
+      start = startchid;
+      dim = pow(2,i); 
+      dimsq = dim*dim;
+      startchid = start + dimsq;
+      
+      par = 1.0/dim/2;
+      z0 = sqrt(2*par*par);
+
+      for (int j=0;j<dimsq;j++){
+        for (int k=0;k<4;k++){
+          for (int l =0;l<q;l++){
+            grid[startchid+j*4+k]->local[l] += (-1.0*grid[]->Q*pow(z0,l+1)/(l+1));
+            for(int o=0;o<=l;o++){
+              grid[startchid+j*4+k]->local[l] += binomialCoeff(l,o)*grid[start+j]->local[o]*pow(z0,l-k);
+            }
+          }
+        }
+      }
+
+
+    }
+  }
+
+  
   /* timing */
   MPI_Barrier(MPI_COMM_WORLD);
   double elapsed = MPI_Wtime() - tt;
