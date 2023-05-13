@@ -195,6 +195,26 @@ int main(int argc, char * argv[]) {
 
       
       MPI_Barrier(MPI_COMM_WORLD);
+
+          if(rank = 0){
+            MPI_Irecv(rech, dim * 2 * (q+1), MPI_DOUBLE, 1, 123, MPI_COMM_WORLD, &request_inh);
+            MPI_Irecv(recv, dim * 2 * (q+1), MPI_DOUBLE, 2, 124, MPI_COMM_WORLD, &request_inv);
+          }
+          if(rank = 1 ){
+            MPI_Irecv(rech, dim * 2 * (q+1), MPI_DOUBLE, 0, 123, MPI_COMM_WORLD, &request_inh);
+            MPI_Irecv(recv, dim * 2 * (q+1), MPI_DOUBLE, 3, 124, MPI_COMM_WORLD, &request_inv);
+          }
+          if(rank =2){
+            MPI_Irecv(rech, dim * 2 * (q+1), MPI_DOUBLE, 3, 123, MPI_COMM_WORLD, &request_inh);
+            MPI_Irecv(recv, dim * 2 * (q+1), MPI_DOUBLE, 0, 124, MPI_COMM_WORLD, &request_inv);
+          }
+          if(rank =3){
+            MPI_Irecv(rech, dim * 2 * (q+1), MPI_DOUBLE, 2, 123, MPI_COMM_WORLD, &request_inh);
+            MPI_Irecv(recv, dim * 2 * (q+1), MPI_DOUBLE, 1, 124, MPI_COMM_WORLD, &request_inv);
+          }
+
+
+
         #pragma omp parallel for
          for (int j=0;j<dim;j ++){
           for (int k=0;k<dim;k ++){
@@ -219,78 +239,12 @@ int main(int argc, char * argv[]) {
                 sendv[stss+ii] = grid[boxid].multipole[ii-1];
               }
             }
-            
+
           }
          }
           
 
-          if(rank = 0){
-            MPI_Irecv(rech, dim * 2 * (q+1), MPI_DOUBLE, 1, 123, MPI_COMM_WORLD, &request_inh);
-            MPI_Irecv(recv, dim * 2 * (q+1), MPI_DOUBLE, 2, 124, MPI_COMM_WORLD, &request_inv);
-          }
-          if(rank = 1 ){
-            MPI_Irecv(rech, dim * 2 * (q+1), MPI_DOUBLE, 0, 123, MPI_COMM_WORLD, &request_inh);
-            MPI_Irecv(recv, dim * 2 * (q+1), MPI_DOUBLE, 3, 124, MPI_COMM_WORLD, &request_inv);
-          }
-          if(rank =2){
-            MPI_Irecv(rech, dim * 2 * (q+1), MPI_DOUBLE, 3, 123, MPI_COMM_WORLD, &request_inh);
-            MPI_Irecv(recv, dim * 2 * (q+1), MPI_DOUBLE, 0, 124, MPI_COMM_WORLD, &request_inv);
-          }
-          if(rank =3){
-            MPI_Irecv(rech, dim * 2 * (q+1), MPI_DOUBLE, 2, 123, MPI_COMM_WORLD, &request_inh);
-            MPI_Irecv(recv, dim * 2 * (q+1), MPI_DOUBLE, 1, 124, MPI_COMM_WORLD, &request_inv);
-          }
-
-
-
-          if(rank = 0){
-            x1 = dim-2;
-            x2 = dim-1;
-            y1 = dim-2;
-            y2 = dim-1;
-          }
-          if(rank = 1 ){
-            x1 = 0;
-            x2 = 1;
-            y1 = dim-2;
-            y2 = dim-1;
-          }
-          if(rank =2){
-            x1 = dim-2;
-            x2 = dim-1;
-            y1 = 0;
-            y2 = 1;
-          }
-          if(rank =3){
-            x1 = 0;
-            x2 = 1;
-            y1 = 0;
-            y2 = 1;
-          }
-
-          for (int j=0;j<dim;j ++){
-            boxid = x1 + j * dim;
-            rech = 
-          }
-
-          for (int k=0;k<dim;k ++){
-            
-          }
-
-
-          if(rank = 1 ){
-            MPI_Irecv(rech, dim * 2 * (q+1), MPI_DOUBLE, 0, 123, MPI_COMM_WORLD, &request_inh);
-            MPI_Irecv(recv, dim * 2 * (q+1), MPI_DOUBLE, 3, 124, MPI_COMM_WORLD, &request_inv);
-          }
-          if(rank =2){
-            MPI_Irecv(rech, dim * 2 * (q+1), MPI_DOUBLE, 3, 123, MPI_COMM_WORLD, &request_inh);
-            MPI_Irecv(recv, dim * 2 * (q+1), MPI_DOUBLE, 0, 124, MPI_COMM_WORLD, &request_inv);
-          }
-          if(rank =3){
-            MPI_Irecv(rech, dim * 2 * (q+1), MPI_DOUBLE, 2, 123, MPI_COMM_WORLD, &request_inh);
-            MPI_Irecv(recv, dim * 2 * (q+1), MPI_DOUBLE, 1, 124, MPI_COMM_WORLD, &request_inv);
-          }
-
+        
           
           if(rank = 0){
             MPI_Isend(sendh,dim * 2 * (q+1), MPI_DOUBLE, 1, 123, MPI_COMM_WORLD, &request_outh);
