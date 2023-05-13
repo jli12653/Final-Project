@@ -265,91 +265,91 @@ int main(int argc, char * argv[]) {
           
         // Compute M2L for every box about the center of each box in there interaction list
         #pragma omp parallel for
-        for (int j=0;i<dim;j++){
-          for (int k=0; k<dim;k++){
+          for (int j=0;i<dim;j++){
+            for (int k=0; k<dim;k++){
           
 
-          x_i = j;
-          y_i = k;
-          boxid = start+x_i+y_i*dim;
-          childx = x_i % 2;
-          childy = y_i % 2;
+            x_i = j;
+            y_i = k;
+            boxid = start+x_i+y_i*dim;
+            childx = x_i % 2;
+            childy = y_i % 2;
 
-          if (childx == 0){
-            if (childy == 0){
-              y1 = y_i-2;
-              y2 = y_i+2;
-              y3 = y_i+3;
-              x1 = x_i-2;
-              x2 = x_i+2;
-              x3 = x_i+3;
+            if (childx == 0){
+              if (childy == 0){
+                y1 = y_i-2;
+                y2 = y_i+2;
+                y3 = y_i+3;
+                x1 = x_i-2;
+                x2 = x_i+2;
+                x3 = x_i+3;
+              }
+              else{
+                y1 = y_i-3;
+                y2 = y_i-2;
+                y3 = y_i+3;
+                x1 = x_i-2;
+                x2 = x_i+2;
+                x3 = x_i+3;
+              }
             }
             else{
-              y1 = y_i-3;
-              y2 = y_i-2;
-              y3 = y_i+3;
-              x1 = x_i-2;
-              x2 = x_i+2;
-              x3 = x_i+3;
+              if (childy == 0){
+                y1 = y_i-2;
+                y2 = y_i+2;
+                y3 = y_i+3;
+                x1 = x_i-3;
+                x2 = x_i-2;
+                x3 = x_i+3;
+              }
+              else{
+                y1 = y_i-3;
+                y2 = y_i-2;
+                y3 = y_i+3;
+                x1 = x_i-3;
+                x2 = x_i-2;
+                x3 = x_i+3;
+              }
             }
-          }
-          else{
-            if (childy == 0){
-              y1 = y_i-2;
-              y2 = y_i+2;
-              y3 = y_i+3;
-              x1 = x_i-3;
-              x2 = x_i-2;
-              x3 = x_i+3;
-            }
-            else{
-              y1 = y_i-3;
-              y2 = y_i-2;
-              y3 = y_i+3;
-              x1 = x_i-3;
-              x2 = x_i-2;
-              x3 = x_i+3;
-            }
-          }
 
 
 
-          if (y1 >=0){
-                for (int iii = i-2;i<=i+3;i++){
-                  if (iii>=0 && iii<dim){
+            if (y1 >=0){
+                  for (int iii = i-2;i<=i+3;i++){
+                    if (iii>=0 && iii<dim){
+
+                    }
+                  }
+                }
+                if (y2 >=0){
+                  for (int iii = i-2;i<=i+3;i++){
+                    if (iii>=0 && iii<dim){
+
+                    }
+                  }
+                }
+                if (y3 >=0){
+                  for (int iii = i-2;i<=i+3;i++){
+                    if (iii>=0 && iii<dim){
+
+                    }
+                  }
+                }
+                if (x1 >=0){
+                  for (int jjj=j-1;jjj<=j+1;jjj+1){
 
                   }
                 }
-              }
-              if (y2 >=0){
-                for (int iii = i-2;i<=i+3;i++){
-                  if (iii>=0 && iii<dim){
-
+                if (x2 >=0){
+                  for (int jjj=j-1;jjj<=j+1;jjj+1){
+                    
                   }
                 }
-              }
-              if (y3 >=0){
-                for (int iii = i-2;i<=i+3;i++){
-                  if (iii>=0 && iii<dim){
-
+                if (x3 >=0){
+                  for (int jjj=j-1;jjj<=j+1;jjj+1){
+                    
                   }
                 }
-              }
-              if (x1 >=0){
-                for (int jjj=j-1;jjj<=j+1;jjj+1){
-
-                }
-              }
-              if (x2 >=0){
-                for (int jjj=j-1;jjj<=j+1;jjj+1){
-                  
-                }
-              }
-              if (x3 >=0){
-                for (int jjj=j-1;jjj<=j+1;jjj+1){
-                  
-                }
-              }
 
 
            } 
