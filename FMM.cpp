@@ -143,7 +143,7 @@ int main(int argc, char * argv[]) {
   
 
   double z0;
-  double startchid;
+  int startchid;
 
   // Multipole to Multipole
 
