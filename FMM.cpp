@@ -65,12 +65,12 @@ int main(int argc, char * argv[]) {
   MPI_Comm_size(MPI_COMM_WORLD, &p);
 
   /* get name of host running MPI process */
-  /*
+  
   char processor_name[MPI_MAX_PROCESSOR_NAME];
   int name_len;
   MPI_Get_processor_name(processor_name, &name_len);
   printf("Rank %d/%d running on %s.\n", mpirank, p, processor_name);
-  */
+  
 
   N = 10000;
   s = 10;
