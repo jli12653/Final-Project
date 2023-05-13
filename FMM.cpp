@@ -140,7 +140,7 @@ int main(int argc, char * argv[]) {
         grid[start+b_c].multipole[j] += (-f[i]*pow(r,j+1))*1.0/(j+1);
       }
     }
-  
+  printf("Compute Multipole for finest level done.\n");
 
   double z0;
   int startchid;
@@ -171,6 +171,9 @@ int main(int argc, char * argv[]) {
 
 
     }
+
+  printf("Multipole to Multipole done.\n");
+
   
 
   // Multipole to Local
@@ -453,6 +456,8 @@ int main(int argc, char * argv[]) {
 
       
     }
+
+    printf("Multipole to Local done.\n");
   
 
 
@@ -483,7 +488,7 @@ int main(int argc, char * argv[]) {
 
 
     }
-  
+  printf("Local to Local done.\n");
 
   
   /* timing */
