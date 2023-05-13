@@ -532,6 +532,7 @@ int main(int argc, char * argv[]) {
   free(f);
   free(u);
   free(grid);
+  
   MPI_Finalize();
   return 0;
 }
