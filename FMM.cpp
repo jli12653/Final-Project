@@ -265,7 +265,7 @@ int main(int argc, char * argv[]) {
           
         // Compute M2L for every box about the center of each box in there interaction list
         #pragma omp parallel for
-          for (int j=0;i<dim;j++){
+        for (int j=0;j<dim;j++){
             for (int k=0; k<dim;k++){
           
 
