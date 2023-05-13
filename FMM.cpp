@@ -176,7 +176,7 @@ int main(int argc, char * argv[]) {
   
 
   // Multipole to Local
-  /*
+  
   int dimpar=0;
   int childx, childy,stss, x_i, y_i, boxid;
   int x1,x2,x3,y1,y2,y3;
@@ -457,7 +457,7 @@ int main(int argc, char * argv[]) {
     }
 
     printf("Multipole to Local done.\n");
-  */
+  
 
 
 
