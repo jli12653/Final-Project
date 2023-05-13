@@ -111,7 +111,7 @@ int main(int argc, char * argv[]) {
   MPI_Barrier(MPI_COMM_WORLD);
   double tt = MPI_Wtime();
 
-  /*
+  
 
   // Compute Multipole for finest level
 
@@ -131,7 +131,7 @@ int main(int argc, char * argv[]) {
     }
   printf("Compute Multipole for finest level done.\n");
 
-  */
+  
 
   double z0;
   int startchid;
