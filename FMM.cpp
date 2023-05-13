@@ -50,24 +50,10 @@ int log_a_to_base_b(int a, int b)
     return log2(a) / log2(b);
 }
 
-/* compuate global residual, assuming ghost values are updated */
-double compute_residual(double *lu, int lN, double invhsq) {
-  int i;
-  double tmp, gres = 0.0, lres = 0.0;
-
-#pragma omp parallel for default(none) shared(lu,lN,invhsq) private(i,tmp) reduction(+:lres)
-  for (i = 1; i <= lN; i++){
-    tmp = ((2.0*lu[i] - lu[i-1] - lu[i+1]) * invhsq - 1);
-    lres += tmp * tmp;
-  }
-  /* use allreduce for convenience; a reduce would also be sufficient */
-  MPI_Allreduce(&lres, &gres, 1, MPI_DOUBLE, MPI_SUM, MPI_COMM_WORLD);
-  return sqrt(gres);
-}
 
 
 int main(int argc, char * argv[]) {
-  int rank, i, p, N, s, iter, max_iters;
+  int rank, p, N, s;
   MPI_Status status;
   MPI_Request request_outh, request_inh;
   MPI_Request request_outv, request_inv;
@@ -85,6 +71,7 @@ int main(int argc, char * argv[]) {
   */
 
   N = 20000;
+  s = 10;
   int Nl = log_a_to_base_b ( N / s , 4);
   int Nb = (pow(4,Nl)-1)/3;
   int dim = pow(2,Nl-1);
