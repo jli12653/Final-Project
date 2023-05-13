@@ -197,20 +197,20 @@ int main(int argc, char * argv[]) {
       MPI_Barrier(MPI_COMM_WORLD);
 
           if(rank = 0){
-            MPI_Irecv(rech, dim * 2 * (q+1), MPI_DOUBLE, 1, 123, MPI_COMM_WORLD, &request_inh);
-            MPI_Irecv(recv, dim * 2 * (q+1), MPI_DOUBLE, 2, 124, MPI_COMM_WORLD, &request_inv);
+            MPI_Irecv(rech, dim * 2 * (q+1), MPI_DOUBLE, 1, i+123, MPI_COMM_WORLD, &request_inh);
+            MPI_Irecv(recv, dim * 2 * (q+1), MPI_DOUBLE, 2, i+124, MPI_COMM_WORLD, &request_inv);
           }
           if(rank = 1 ){
-            MPI_Irecv(rech, dim * 2 * (q+1), MPI_DOUBLE, 0, 123, MPI_COMM_WORLD, &request_inh);
-            MPI_Irecv(recv, dim * 2 * (q+1), MPI_DOUBLE, 3, 124, MPI_COMM_WORLD, &request_inv);
+            MPI_Irecv(rech, dim * 2 * (q+1), MPI_DOUBLE, 0, i+123, MPI_COMM_WORLD, &request_inh);
+            MPI_Irecv(recv, dim * 2 * (q+1), MPI_DOUBLE, 3, i+124, MPI_COMM_WORLD, &request_inv);
           }
           if(rank =2){
-            MPI_Irecv(rech, dim * 2 * (q+1), MPI_DOUBLE, 3, 123, MPI_COMM_WORLD, &request_inh);
-            MPI_Irecv(recv, dim * 2 * (q+1), MPI_DOUBLE, 0, 124, MPI_COMM_WORLD, &request_inv);
+            MPI_Irecv(rech, dim * 2 * (q+1), MPI_DOUBLE, 3, i+123, MPI_COMM_WORLD, &request_inh);
+            MPI_Irecv(recv, dim * 2 * (q+1), MPI_DOUBLE, 0, i+124, MPI_COMM_WORLD, &request_inv);
           }
           if(rank =3){
-            MPI_Irecv(rech, dim * 2 * (q+1), MPI_DOUBLE, 2, 123, MPI_COMM_WORLD, &request_inh);
-            MPI_Irecv(recv, dim * 2 * (q+1), MPI_DOUBLE, 1, 124, MPI_COMM_WORLD, &request_inv);
+            MPI_Irecv(rech, dim * 2 * (q+1), MPI_DOUBLE, 2, i+123, MPI_COMM_WORLD, &request_inh);
+            MPI_Irecv(recv, dim * 2 * (q+1), MPI_DOUBLE, 1, i+124, MPI_COMM_WORLD, &request_inv);
           }
 
 
@@ -247,20 +247,20 @@ int main(int argc, char * argv[]) {
         
           
           if(rank = 0){
-            MPI_Isend(sendh,dim * 2 * (q+1), MPI_DOUBLE, 1, 123, MPI_COMM_WORLD, &request_outh);
-            MPI_Isend(sendv, dim * 2 * (q+1), MPI_DOUBLE, 2, 124, MPI_COMM_WORLD, &request_outv);
+            MPI_Isend(sendh,dim * 2 * (q+1), MPI_DOUBLE, 1, i+123, MPI_COMM_WORLD, &request_outh);
+            MPI_Isend(sendv, dim * 2 * (q+1), MPI_DOUBLE, 2, i+124, MPI_COMM_WORLD, &request_outv);
           }
           if(rank = 1 ){
-            MPI_Isend(sendh,dim * 2 * (q+1), MPI_DOUBLE, 0, 123, MPI_COMM_WORLD, &request_outh);
-            MPI_Isend(sendv, dim * 2 * (q+1), MPI_DOUBLE, 3, 124, MPI_COMM_WORLD, &request_outv);
+            MPI_Isend(sendh,dim * 2 * (q+1), MPI_DOUBLE, 0, i+123, MPI_COMM_WORLD, &request_outh);
+            MPI_Isend(sendv, dim * 2 * (q+1), MPI_DOUBLE, 3, i+124, MPI_COMM_WORLD, &request_outv);
           }
           if(rank =2){
-            MPI_Isend(sendh,dim * 2 * (q+1), MPI_DOUBLE, 3, 123, MPI_COMM_WORLD, &request_outh);
-            MPI_Isend(sendv, dim * 2 * (q+1), MPI_DOUBLE, 0, 124, MPI_COMM_WORLD, &request_outv);
+            MPI_Isend(sendh,dim * 2 * (q+1), MPI_DOUBLE, 3, i+123, MPI_COMM_WORLD, &request_outh);
+            MPI_Isend(sendv, dim * 2 * (q+1), MPI_DOUBLE, 0, i+124, MPI_COMM_WORLD, &request_outv);
           }
           if(rank =3){
-           MPI_Isend(sendh,dim * 2 * (q+1), MPI_DOUBLE, 2, 123, MPI_COMM_WORLD, &request_outh);
-            MPI_Isend(sendv, dim * 2 * (q+1), MPI_DOUBLE, 1, 124, MPI_COMM_WORLD, &request_outv);
+           MPI_Isend(sendh,dim * 2 * (q+1), MPI_DOUBLE, 2, i+123, MPI_COMM_WORLD, &request_outh);
+            MPI_Isend(sendv, dim * 2 * (q+1), MPI_DOUBLE, 1, i+124, MPI_COMM_WORLD, &request_outv);
           }
           
         // Compute M2L for every box about the center of each box in there interaction list
