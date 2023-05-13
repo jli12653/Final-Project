@@ -89,7 +89,7 @@ int main(int argc, char * argv[]) {
       box_initial(q,grid[i]);
       
     }
-    printf("%f \n",grid[15].multipole[q-1]);
+  printf("%f \n",grid[15].Q);
 
 
 
