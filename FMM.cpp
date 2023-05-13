@@ -428,6 +428,7 @@ int main(int argc, char * argv[]) {
               }
             }
           }
+          
           #pragma omp parallel for
           for ( x_v =0;x_v<dim;x_v++){
             for (y_v = 0;y_v<2;y_v++){
