@@ -1,5 +1,5 @@
 /* MPI-parallel FMM
- * 
+ * The formual used in each computation make be incorrect. I am not fully understand certain formula. Will update later with a better understanding.
  * 
  * 
  */
@@ -195,14 +195,33 @@ int main(int argc, char * argv[]) {
 
       
       MPI_Barrier(MPI_COMM_WORLD);
+        #pragma omp parallel for
+         for (int j=0;j<dim;j ++){
+          for (int k=0;k<dim;k ++){
+            x_i = j;
+            y_i = k;
+            boxid = start+x_i+y_i*dim;
+            childx = x_i % 2;
+            childy = y_i % 2;
 
-      for (int j=0;i<dim;j++){
-        for (int k=0; k<dim;k++){
-          x_i = j;
-          y_i = k;
-          boxid = start+x_i+y_i*dim;
-          childx = x_i % 2;
-          childy = y_i % 2;
+
+             if (x_i/2 == dimpar - 1){
+              stss = childx + y_i*2;
+              sendh[stss] = grid[boxid].Q; 
+              for(int ii = 1;ii<=q;ii++){
+                sendh[stss+ii] = grid[boxid].multipole[ii-1];
+              }
+            }
+            if (y_i/2 == dimpar - 1){
+              stss = x_i + childy*2;
+              sendh[stss] = grid[boxid].Q; 
+              for(int ii = 1;ii<=q;ii++){
+                sendv[stss+ii] = grid[boxid].multipole[ii-1];
+              }
+            }
+            
+          }
+         }
           
 
           if(rank = 0){
@@ -222,21 +241,57 @@ int main(int argc, char * argv[]) {
             MPI_Irecv(recv, dim * 2 * (q+1), MPI_DOUBLE, 1, 124, MPI_COMM_WORLD, &request_inv);
           }
 
-            if (x_i/2 == dimpar - 1){
-              stss = childx + y_i*2;
-              sendh[stss] = grid[boxid].Q; 
-              for(int ii = 1;ii<=q;ii++){
-                sendh[stss+ii] = grid[boxid].multipole[ii-1];
-              }
-            }
-            if (y_i/2 == dimpar - 1){
-              stss = x_i + childy*2;
-              sendh[stss] = grid[boxid].Q; 
-              for(int ii = 1;ii<=q;ii++){
-                sendv[stss+ii] = grid[boxid].multipole[ii-1];
-              }
-            }
 
+
+          if(rank = 0){
+            x1 = dim-2;
+            x2 = dim-1;
+            y1 = dim-2;
+            y2 = dim-1;
+          }
+          if(rank = 1 ){
+            x1 = 0;
+            x2 = 1;
+            y1 = dim-2;
+            y2 = dim-1;
+          }
+          if(rank =2){
+            x1 = dim-2;
+            x2 = dim-1;
+            y1 = 0;
+            y2 = 1;
+          }
+          if(rank =3){
+            x1 = 0;
+            x2 = 1;
+            y1 = 0;
+            y2 = 1;
+          }
+
+          for (int j=0;j<dim;j ++){
+            boxid = x1 + j * dim;
+            rech = 
+          }
+
+          for (int k=0;k<dim;k ++){
+            
+          }
+
+
+          if(rank = 1 ){
+            MPI_Irecv(rech, dim * 2 * (q+1), MPI_DOUBLE, 0, 123, MPI_COMM_WORLD, &request_inh);
+            MPI_Irecv(recv, dim * 2 * (q+1), MPI_DOUBLE, 3, 124, MPI_COMM_WORLD, &request_inv);
+          }
+          if(rank =2){
+            MPI_Irecv(rech, dim * 2 * (q+1), MPI_DOUBLE, 3, 123, MPI_COMM_WORLD, &request_inh);
+            MPI_Irecv(recv, dim * 2 * (q+1), MPI_DOUBLE, 0, 124, MPI_COMM_WORLD, &request_inv);
+          }
+          if(rank =3){
+            MPI_Irecv(rech, dim * 2 * (q+1), MPI_DOUBLE, 2, 123, MPI_COMM_WORLD, &request_inh);
+            MPI_Irecv(recv, dim * 2 * (q+1), MPI_DOUBLE, 1, 124, MPI_COMM_WORLD, &request_inv);
+          }
+
+          
           if(rank = 0){
             MPI_Isend(sendh,dim * 2 * (q+1), MPI_DOUBLE, 1, 123, MPI_COMM_WORLD, &request_outh);
             MPI_Isend(sendv, dim * 2 * (q+1), MPI_DOUBLE, 2, 124, MPI_COMM_WORLD, &request_outv);
@@ -254,6 +309,17 @@ int main(int argc, char * argv[]) {
             MPI_Isend(sendv, dim * 2 * (q+1), MPI_DOUBLE, 1, 124, MPI_COMM_WORLD, &request_outv);
           }
           
+        // Compute M2L for every box about the center of each box in there interaction list
+        #pragma omp parallel for
+        for (int j=0;i<dim;j++){
+          for (int k=0; k<dim;k++){
+          
+
+          x_i = j;
+          y_i = k;
+          boxid = start+x_i+y_i*dim;
+          childx = x_i % 2;
+          childy = y_i % 2;
 
           if (childx == 0){
             if (childy == 0){
@@ -331,6 +397,10 @@ int main(int argc, char * argv[]) {
                 }
               }
 
+
+           } 
+          }
+
           MPI_Wait(&request_outh, &status);
           MPI_Wait(&request_inh, &status);
           MPI_Wait(&request_outv, &status);
@@ -364,6 +434,7 @@ int main(int argc, char * argv[]) {
 
           int parid, fir;
 
+          #pragma omp parallel for
           for ( x_h =0;x_h<2;x_h++){
             for (y_h = 0;y_h<dim;y_h++){
               if (x_h == 0){
@@ -401,7 +472,7 @@ int main(int argc, char * argv[]) {
               }
             }
           }
-
+          #pragma omp parallel for
           for ( x_v =0;x_v<dim;x_v++){
             for (y_v = 0;y_v<2;y_v++){
               if (y_v == 0){
@@ -445,8 +516,7 @@ int main(int argc, char * argv[]) {
 
 
 
-        } 
-      }
+       
 
       free(sendh);
       free(sendv);
