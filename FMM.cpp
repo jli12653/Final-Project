@@ -222,16 +222,16 @@ int main(int argc, char * argv[]) {
 
             if (x_i/2 == dimpar - 1){
               stss = childx + y_i*2;
-              sendh[stss] = grid[boxid]->Q; 
+              sendh[stss] = grid[boxid].Q; 
               for(int ii = 1;ii<=q;ii++){
-                sendh[stss+ii] = grid[boxid]->multipole[ii-1];
+                sendh[stss+ii] = grid[boxid].multipole[ii-1];
               }
             }
             if (y_i/2 == dimpar - 1){
               stss = x_i + childy*2;
-              sendh[stss] = grid[boxid]->Q; 
+              sendh[stss] = grid[boxid].Q; 
               for(int ii = 1;ii<=q;ii++){
-                sendv[stss+ii] = grid[boxid]->multipole[ii-1];
+                sendv[stss+ii] = grid[boxid].multipole[ii-1];
               }
             }
 
