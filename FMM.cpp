@@ -489,7 +489,7 @@ int main(int argc, char * argv[]) {
   /* timing */
   MPI_Barrier(MPI_COMM_WORLD);
   double elapsed = MPI_Wtime() - tt;
-  if (0 == mpirank) {
+  if (0 == rank) {
     printf("Time elapsed is %f seconds.\n", elapsed);
   }
   MPI_Finalize();
