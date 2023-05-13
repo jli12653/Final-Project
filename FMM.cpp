@@ -202,8 +202,6 @@ int main(int argc, char * argv[]) {
           childx = x_i % 2;
           childy = y_i % 2;
           
-          MPI_Irecv(rech, dim * 2 * (q+1), MPI_DOUBLE, mpirank+1, 123, MPI_COMM_WORLD, &request_inh);
-          MPI_Isend(&(lunew[lN]), 1, MPI_DOUBLE, mpirank+1, 124, MPI_COMM_WORLD, &request_out);
 
           if(rank = 0){
             MPI_Irecv(rech, dim * 2 * (q+1), MPI_DOUBLE, 1, 123, MPI_COMM_WORLD, &request_inh);
