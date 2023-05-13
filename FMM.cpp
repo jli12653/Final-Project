@@ -19,9 +19,9 @@ struct box{
 }
 
 void box_initial(int qq, box b){
-  b->Q = 0;
-  b->multipole = (double *) calloc(sizeof(double), qq);
-  b->local = (double *) calloc(sizeof(double), qq);
+  b.Q = 0;
+  b.multipole = (double *) calloc(sizeof(double), qq);
+  b.local = (double *) calloc(sizeof(double), qq);
 
   for (int i=0;i<qq;i++){
     b->multipole[i] = 0;
