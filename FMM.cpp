@@ -494,7 +494,7 @@ int main(int argc, char * argv[]) {
   startchid = 0;
 
   #pragma omp parallel for
-    for(int i = 0;i<Nl;i++){
+    for(int i = 0;i<Nl-1;i++){
       start = startchid;
       dim = pow(2,i); 
       dimsq = dim*dim;
