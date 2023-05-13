@@ -187,10 +187,10 @@ int main(int argc, char * argv[]) {
       dim = pow(2,i);
       dimpar = dim/2;
       dimsq = dim*dim;
-      double* sendh = (double*) malloc(dim * 2 * (q+1) * sizeof(double)); 
-      double* sendv = (double*) malloc(dim * 2 * (q+1) * sizeof(double));
-      double* rech = (double*) malloc(dim * 2 * (q+1) * sizeof(double)); 
-      double* recv = (double*) malloc(dim * 2 * (q+1) * sizeof(double));
+      // double* sendh = (double*) malloc(dim * 2 * (q+1) * sizeof(double)); 
+      // double* sendv = (double*) malloc(dim * 2 * (q+1) * sizeof(double));
+      // double* rech = (double*) malloc(dim * 2 * (q+1) * sizeof(double)); 
+      // double* recv = (double*) malloc(dim * 2 * (q+1) * sizeof(double));
 
 
       /*
@@ -428,7 +428,7 @@ int main(int argc, char * argv[]) {
               }
             }
           }
-          
+
           #pragma omp parallel for
           for ( x_v =0;x_v<dim;x_v++){
             for (y_v = 0;y_v<2;y_v++){
@@ -475,10 +475,10 @@ int main(int argc, char * argv[]) {
 
        
 
-      free(sendh);
-      free(sendv);
-      free(rech);
-      free(recv);
+      // free(sendh);
+      // free(sendv);
+      // free(rech);
+      // free(recv);
 
       
     }
