@@ -82,9 +82,12 @@ int main(int argc, char * argv[]) {
   double par = 1.0/dim;
   struct box * grid = (box*) malloc(Nb * sizeof(box)); 
 
+  
+  
   #pragma omp parallel for
     for(int i = 0;i<Nb;i++){
       box_initial(q,grid[i]);
+      printf("%f \n",gird[i].multipole[q-1]);
     }
   
 
@@ -130,7 +133,7 @@ int main(int argc, char * argv[]) {
       grid[start + b_c].Q += f[i];
 
       for (int j = 0;j<q;j++){
-        grid[start+b_c].multipole[0] += (-f[i]*pow(r,j+1))*1.0/(j+1);
+        //grid[start+b_c].multipole[j] += (-f[i]*pow(r,j+1))*1.0/(j+1);
       }
     }
   printf("Compute Multipole for finest level done.\n");
