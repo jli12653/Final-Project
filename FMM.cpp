@@ -75,7 +75,7 @@ int main(int argc, char * argv[]) {
   int Nl = log_a_to_base_b ( N / s , 4);
   int Nb = (pow(4,Nl)-1)/3;
   int dim = pow(2,Nl-1);
-  int dimsq;
+  int dimsq = dim*dim;
   int q = 6;
   double par = 1.0/dim;
   struct box * grid = (box*) malloc(Nb * sizeof(box)); 
@@ -117,15 +117,14 @@ int main(int argc, char * argv[]) {
 
   #pragma omp parallel for
     for(int i=0;i<N;i++){
-      if (x[i] == 1.0) x_c = x[i]/par-1;
-      else x_c = x[i]/par;
-      if (y[i] == 1.0) y_c = y[i]/par-1;
-      else y_c = y[i]/par;
+      x_c = x[i]/par;
+      y_c = y[i]/par;
 
       dx = x[i] - (par*x_c+par/2.0);
       dy = y[i] - (par*y_c+par/2.0);
       r = sqrt(dx*dx+dy*dy);
       b_c = dim*y_c + x_c;
+      if (b_c >= dimsq) b_c = dimsq - 1;
       grid[start+b_c].Q += f[i];
 
       for (int j = 0;j<q;j++){
