@@ -461,7 +461,7 @@ int main(int argc, char * argv[]) {
   startchid = 0;
 
   #pragma omp parallel for
-    for(int i = 0;i<Nl>;i++){
+    for(int i = 0;i<Nl;i++){
       start = startchid;
       dim = pow(2,i); 
       dimsq = dim*dim;
@@ -473,9 +473,9 @@ int main(int argc, char * argv[]) {
       for (int j=0;j<dimsq;j++){
         for (int k=0;k<4;k++){
           for (int l =0;l<q;l++){
-            grid[startchid+j*4+k]->local[l] += (-1.0*grid[]->Q*pow(z0,l+1)/(l+1));
+            grid[startchid+j*4+k].local[l] += (-1.0*grid[start+j].Q*pow(z0,l+1)/(l+1));
             for(int o=0;o<=l;o++){
-              grid[startchid+j*4+k]->local[l] += binomialCoeff(l,o)*grid[start+j]->local[o]*pow(z0,l-k);
+              grid[startchid+j*4+k].local[l] += binomialCoeff(l,o)*grid[start+j].local[o]*pow(z0,l-k);
             }
           }
         }
