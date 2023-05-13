@@ -117,11 +117,11 @@ int main(int argc, char * argv[]) {
 
   #pragma omp parallel for
     for(int i=0;i<N;i++){
-      if (x[i] == 1) x_c = x[i]/par-1;
+      if (x[i] == 1.0) x_c = x[i]/par-1;
       else x_c = x[i]/par;
-      if (y[i] == 1) y_c = y[i]/par-1;
+      if (y[i] == 1.0) y_c = y[i]/par-1;
       else y_c = y[i]/par;
-      
+
       dx = x[i] - (par*x_c+par/2.0);
       dy = y[i] - (par*y_c+par/2.0);
       r = sqrt(dx*dx+dy*dy);
