@@ -193,7 +193,7 @@ int main(int argc, char * argv[]) {
       double* recv = (double*) malloc(dim * 2 * (q+1) * sizeof(double));
 
 
-      
+      /*
       MPI_Barrier(MPI_COMM_WORLD);
 
           if(rank = 0){
@@ -262,6 +262,8 @@ int main(int argc, char * argv[]) {
            MPI_Isend(sendh,dim * 2 * (q+1), MPI_DOUBLE, 2, i+123, MPI_COMM_WORLD, &request_outh);
             MPI_Isend(sendv, dim * 2 * (q+1), MPI_DOUBLE, 1, i+124, MPI_COMM_WORLD, &request_outv);
           }
+
+          */
           
         // Compute M2L for every box about the center of each box in there interaction list
         #pragma omp parallel for
