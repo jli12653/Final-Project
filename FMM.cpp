@@ -24,8 +24,8 @@ void box_initial(int qq, box b){
   b.local = (double *) calloc(sizeof(double), qq);
 
   for (int i=0;i<qq;i++){
-    b->multipole[i] = 0;
-    b->local[i] = 0;
+    b.multipole[i] = 0;
+    b.local[i] = 0;
   }
 }
 
