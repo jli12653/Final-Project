@@ -130,7 +130,7 @@ int main(int argc, char * argv[]) {
       grid[start + b_c].Q += f[i];
 
       for (int j = 0;j<q;j++){
-        grid[start+b_c].multipole[j] += (-f[i]*pow(r,j+1))*1.0/(j+1);
+        grid[start+b_c].multipole[5] += (-f[i]*pow(r,j+1))*1.0/(j+1);
       }
     }
   printf("Compute Multipole for finest level done.\n");
