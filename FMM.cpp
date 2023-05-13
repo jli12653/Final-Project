@@ -338,17 +338,17 @@ int main(int argc, char * argv[]) {
                   }
                 }
                 if (x1 >=0 && x1 < dim){
-                  for (int jjj=y_i-1;jjj<=y_i-1;jjj+1){
+                  for (int jjj=y_i-1;jjj<=y_i+1;jjj++){
 
                   }
                 }
                 if (x2 >=0 && x2 < dim){
-                  for (int jjj=y_i-1;jjj<=y_i-1;jjj+1){
+                  for (int jjj=y_i-1;jjj<=y_i+1;jjj++){
                     
                   }
                 }
                 if (x3 >=0 && x3 < dim){
-                  for (int jjj=y_i-1;jjj<=y_i-1;jjj+1){
+                  for (int jjj=y_i-1;jjj<=y_i+1;jjj++){
                     
                   }
                 }
