@@ -461,7 +461,7 @@ int main(int argc, char * argv[]) {
 
 
 
-  /*
+  
   // Local to Local
   start = 0;
   startchid = 0;
@@ -490,7 +490,7 @@ int main(int argc, char * argv[]) {
 
     }
   printf("Local to Local done.\n");
-  */
+  
   
   /* timing */
   MPI_Barrier(MPI_COMM_WORLD);
