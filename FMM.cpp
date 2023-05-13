@@ -16,7 +16,7 @@ struct box{
   double Q;
   double* multipole; 
   double* local;
-}
+};
 
 void box_initial(int qq, box b){
   b.Q = 0;
