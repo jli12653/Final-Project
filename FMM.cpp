@@ -125,10 +125,10 @@ int main(int argc, char * argv[]) {
       r = sqrt(dx*dx+dy*dy);
       b_c = dim*y_c + x_c;
       if (b_c >= dimsq) b_c = dimsq - 1;
-      grid[start+b_c].Q += f[i];
+      grid[start + b_c].Q += f[i];
 
       for (int j = 0;j<q;j++){
-        grid[start+b_c].multipole[j] += (-f[i]*pow(r,j+1))*1.0/(j+1);
+        //grid[start+b_c].multipole[j] += (-f[i]*pow(r,j+1))*1.0/(j+1);
       }
     }
   printf("Compute Multipole for finest level done.\n");
