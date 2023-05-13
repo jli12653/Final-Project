@@ -522,9 +522,9 @@ int main(int argc, char * argv[]) {
   /* timing */
   MPI_Barrier(MPI_COMM_WORLD);
   double elapsed = MPI_Wtime() - tt;
-  if (0 == rank) {
+  //if (0 == rank) {
     printf("Time elapsed is %f seconds.\n", elapsed);
-  }
+  //}
   printf("Multipole to Local done.\n");
 
   free(x);
