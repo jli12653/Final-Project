@@ -16,8 +16,8 @@
 
 struct box{
   double Q;
-  double* multipole =(double*) malloc(6 * sizeof(double)) ; 
-  double* local =(double*) malloc(6 * sizeof(double)) ; 
+  double multipole[6]; 
+  double local[6] ; 
 };
 
 void box_initial(struct box b){
@@ -132,7 +132,7 @@ int main(int argc, char * argv[]) {
       grid[start + b_c].Q += f[i];
 
       for (int j = 0;j<q;j++){
-        //grid[start+b_c].multipole[j] += (-f[i]*pow(r,j+1))*1.0/(j+1);
+        grid[start+b_c].multipole[j] += (-f[i]*pow(r,j+1))*1.0/(j+1);
       }
     }
   printf("Compute Multipole for finest level done.\n");
