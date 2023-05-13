@@ -289,7 +289,7 @@ int main(int argc, char * argv[]) {
               else{
                 y1 = y_i-3;
                 y2 = y_i-2;
-                y3 = y_i+3;
+                y3 = y_i+2;
                 x1 = x_i-2;
                 x2 = x_i+2;
                 x3 = x_i+3;
@@ -302,53 +302,53 @@ int main(int argc, char * argv[]) {
                 y3 = y_i+3;
                 x1 = x_i-3;
                 x2 = x_i-2;
-                x3 = x_i+3;
+                x3 = x_i+2;
               }
               else{
                 y1 = y_i-3;
                 y2 = y_i-2;
-                y3 = y_i+3;
+                y3 = y_i+2;
                 x1 = x_i-3;
                 x2 = x_i-2;
-                x3 = x_i+3;
+                x3 = x_i+2;
               }
             }
 
 
 
-            if (y1 >=0){
-                  for (int iii = i-2;i<=i+3;i++){
+                if (y1 >=0 && y1 < dim){
+                  for (int iii = x1;iii<=x3;iii++){
                     if (iii>=0 && iii<dim){
 
                     }
                   }
                 }
-                if (y2 >=0){
-                  for (int iii = i-2;i<=i+3;i++){
+                if (y2 >=0 && y2 < dim){
+                  for (int iii = x1;iii<=x3;iii++){
                     if (iii>=0 && iii<dim){
 
                     }
                   }
                 }
-                if (y3 >=0){
-                  for (int iii = i-2;i<=i+3;i++){
+                if (y3 >=0 && y3 < dim){
+                  for (int iii = x1;iii<=x3;iii++){
                     if (iii>=0 && iii<dim){
 
                     }
                   }
                 }
-                if (x1 >=0){
-                  for (int jjj=j-1;jjj<=j+1;jjj+1){
+                if (x1 >=0 && x1 < dim){
+                  for (int jjj=y_i-1;jjj<=y_i-1;jjj+1){
 
                   }
                 }
-                if (x2 >=0){
-                  for (int jjj=j-1;jjj<=j+1;jjj+1){
+                if (x2 >=0 && x2 < dim){
+                  for (int jjj=y_i-1;jjj<=y_i-1;jjj+1){
                     
                   }
                 }
-                if (x3 >=0){
-                  for (int jjj=j-1;jjj<=j+1;jjj+1){
+                if (x3 >=0 && x3 < dim){
+                  for (int jjj=y_i-1;jjj<=y_i-1;jjj+1){
                     
                   }
                 }
