@@ -116,7 +116,7 @@ int main(int argc, char * argv[]) {
   // Compute Multipole for finest level
 
   #pragma omp parallel for
-    for(int i=0;i<Nb;i++){
+    for(int i=0;i<N;i++){
       x_c = x[i]/par;
       y_c = y[i]/par;
       dx = x[i] - (par*x_c+par/2.0);
