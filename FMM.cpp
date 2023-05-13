@@ -86,7 +86,7 @@ int main(int argc, char * argv[]) {
   
   #pragma omp parallel for
     for(int i = 0;i<Nb;i++){
-      box_initial(q,grid[i]);
+      box_initial(grid[i]);
       
     }
 
