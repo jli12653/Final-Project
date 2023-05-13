@@ -134,6 +134,8 @@ int main(int argc, char * argv[]) {
 
   // Multipole to Multipole
 
+  
+  /*
   #pragma omp parallel for
     for(int i = Nl-2;i>=0;i--){
       dim = pow(2,i); 
@@ -161,7 +163,7 @@ int main(int argc, char * argv[]) {
 
   printf("Multipole to Multipole done.\n");
 
-  
+  */
 
   // Multipole to Local
   /*
