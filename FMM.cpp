@@ -182,7 +182,7 @@ int main(int argc, char * argv[]) {
   int x1,x2,x3,y1,y2,y3;
 
   #pragma omp parallel for
-    for(int i = 2; i<=Nl;i++){
+    for(int i = 1; i<Nl;i++){
       start = (pow(4,i-1)-1)/3;
       dim = pow(2,i);
       dimpar = dim/2;
