@@ -93,11 +93,11 @@ int main(int argc, char * argv[]) {
   double par = 1.0/dim;
   struct box * grid = (box*) malloc(Nb * sizeof(box)); 
 
-  #pragma omp parallel for{
+  #pragma omp parallel for
     for(int i = 0;i<Nb;i++){
       box_initial(q,grid[i]);
     }
-  }
+  
 
 
 
@@ -121,9 +121,12 @@ int main(int argc, char * argv[]) {
   int b_c;
   int start = (pow(4,Nl-1)-1)/3;
 
+  MPI_Barrier(MPI_COMM_WORLD);
+  double tt = MPI_Wtime();
+
   // Compute Multipole for finest level
 
-  #pragma omp parallel for{
+  #pragma omp parallel for
     for(int i=0;i<n;i++){
       x_c = x[i]/par;
       y_c = y[i]/par;
@@ -137,14 +140,14 @@ int main(int argc, char * argv[]) {
         grid[start+b_c]->multipole[j] += (-f[i]*pow(r,j+1))*1.0/(j+1);
       }
     }
-  }
+  
 
   double z0;
   double startchid;
 
   // Multipole to Multipole
 
-  #pragma omp parallel for{
+  #pragma omp parallel for
     for(int i = Nl-2;i>=0;i--){
       dim = pow(2,i); 
       dimsq = dim*dim;
@@ -168,7 +171,7 @@ int main(int argc, char * argv[]) {
 
 
     }
-  }
+  
 
   // Multipole to Local
 
@@ -176,7 +179,7 @@ int main(int argc, char * argv[]) {
   int childx, childy,stss, x_i, y_i, boxid;
   int x1,x2,x3,y1,y2,y3;
 
-  #pragma omp parallel for{
+  #pragma omp parallel for
     for(int i = 2; i<=Nl;i++){
       start = (pow(4,i-1)-1)/3;
       dim = pow(2,i);
@@ -452,14 +455,14 @@ int main(int argc, char * argv[]) {
 
       
     }
-  }
+  
 
 
   // Local to Local
   start = 0;
   startchid = 0;
 
-  #pragma omp parallel for{
+  #pragma omp parallel for
     for(int i = 0;i<Nl>;i++){
       start = startchid;
       dim = pow(2,i); 
@@ -482,7 +485,7 @@ int main(int argc, char * argv[]) {
 
 
     }
-  }
+  
 
   
   /* timing */
