@@ -12,16 +12,16 @@
 #include <mpi.h>
 #include <string.h>
 
+constant int q = 6;
+
 struct box{
   double Q;
-  double* multipole; 
-  double* local;
+  double* multipole =(double*) malloc(q * sizeof(double)) ; 
+  double* local =(double*) malloc(q * sizeof(double)) ; 
 };
 
-void box_initial(int qq, box b){
+void box_initial(struct box b){
   b.Q = 0;
-  b.multipole = (double*) malloc(qq * sizeof(double));
-  b.local = (double*) malloc(qq * sizeof(double));
 
   for (int i=0;i<qq;i++){
     b.multipole[i] = 0;
@@ -78,7 +78,6 @@ int main(int argc, char * argv[]) {
   int Nb = (pow(4,Nl)-1)/3;
   int dim = pow(2,Nl-1);
   int dimsq = dim*dim;
-  int q = 6;
   double par = 1.0/dim;
   struct box * grid = (box*) malloc(Nb * sizeof(box)); 
 
