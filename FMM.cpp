@@ -525,7 +525,7 @@ int main(int argc, char * argv[]) {
   //if (0 == rank) {
     printf("Time elapsed is %f seconds.\n", elapsed);
   //}
-  printf("Multipole to Local done.\n");
+  
 
   free(x);
   free(y);
