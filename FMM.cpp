@@ -27,6 +27,8 @@ void box_initial(int qq, box b){
     b.multipole[i] = 0;
     b.local[i] = 0;
   }
+
+  return;
 }
 
 
