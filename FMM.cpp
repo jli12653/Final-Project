@@ -87,7 +87,7 @@ int main(int argc, char * argv[]) {
   #pragma omp parallel for
     for(int i = 0;i<Nb;i++){
       box_initial(q,grid[i]);
-      printf("%f \n",gird[i].multipole[q-1]);
+      printf("%f \n",grid[i].multipole[q-1]);
     }
   
 
