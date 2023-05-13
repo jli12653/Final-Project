@@ -257,38 +257,38 @@ int main(int argc, char * argv[]) {
 
           if (childx == 0){
             if (childy == 0){
-              y1 = j-2;
-              y2 = j+2;
-              y3 = j+3;
-              x1 = x-2;
-              x2 = x+2;
-              x3 = x+3;
+              y1 = y_i-2;
+              y2 = y_i+2;
+              y3 = y_i+3;
+              x1 = x_i-2;
+              x2 = x_i+2;
+              x3 = x_i+3;
             }
             else{
-              y1 = j-3;
-              y2 = j-2;
-              y3 = j+3;
-              x1 = x-2;
-              x2 = x+2;
-              x3 = x+3;
+              y1 = y_i-3;
+              y2 = y_i-2;
+              y3 = y_i+3;
+              x1 = x_i-2;
+              x2 = x_i+2;
+              x3 = x_i+3;
             }
           }
           else{
             if (childy == 0){
-              y1 = j-2;
-              y2 = j+2;
-              y3 = j+3;
-              x1 = x-3;
-              x2 = x-2;
-              x3 = x+3;
+              y1 = y_i-2;
+              y2 = y_i+2;
+              y3 = y_i+3;
+              x1 = x_i-3;
+              x2 = x_i-2;
+              x3 = x_i+3;
             }
             else{
-              y1 = j-3;
-              y2 = j-2;
-              y3 = j+3;
-              x1 = x-3;
-              x2 = x-2;
-              x3 = x+3;
+              y1 = y_i-3;
+              y2 = y_i-2;
+              y3 = y_i+3;
+              x1 = x_i-3;
+              x2 = x_i-2;
+              x3 = x_i+3;
             }
           }
 
