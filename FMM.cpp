@@ -19,7 +19,7 @@ struct box{
 }
 
 void box_initial(int qq, box b){
-  Q = 0;
+  b->Q = 0;
   b->multipole = (double *) calloc(sizeof(double), qq);
   b->local = (double *) calloc(sizeof(double), qq);
 
