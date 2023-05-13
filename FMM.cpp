@@ -363,7 +363,7 @@ int main(int argc, char * argv[]) {
           int parid, fir;
 
           for ( x_h =0;x_h<2;x_h++){
-            for (y_h = =;y_h<dim;y_h++){
+            for (y_h = 0;y_h<dim;y_h++){
               if (x_h == 0){
 
                 // only update x1
@@ -401,7 +401,7 @@ int main(int argc, char * argv[]) {
           }
 
           for ( x_v =0;x_v<dim;x_v++){
-            for (y_v = =;y_v<2;y_v++){
+            for (y_v = 0;y_v<2;y_v++){
               if (y_v == 0){
 
                 // only update y1
