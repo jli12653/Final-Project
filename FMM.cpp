@@ -70,7 +70,7 @@ int main(int argc, char * argv[]) {
   printf("Rank %d/%d running on %s.\n", mpirank, p, processor_name);
   */
 
-  N = 20000;
+  N = 200;
   s = 10;
   int Nl = log_a_to_base_b ( N / s , 4);
   int Nb = (pow(4,Nl)-1)/3;
