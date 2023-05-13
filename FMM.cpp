@@ -12,18 +12,18 @@
 #include <mpi.h>
 #include <string.h>
 
-constant int q = 6;
+
 
 struct box{
   double Q;
-  double* multipole =(double*) malloc(q * sizeof(double)) ; 
-  double* local =(double*) malloc(q * sizeof(double)) ; 
+  double* multipole =(double*) malloc(6 * sizeof(double)) ; 
+  double* local =(double*) malloc(6 * sizeof(double)) ; 
 };
 
 void box_initial(struct box b){
   b.Q = 0;
 
-  for (int i=0;i<qq;i++){
+  for (int i=0;i<6;i++){
     b.multipole[i] = 0;
     b.local[i] = 0;
   }
@@ -74,6 +74,7 @@ int main(int argc, char * argv[]) {
 
   N = 10000;
   s = 10;
+  int q = 6;
   int Nl = log_a_to_base_b ( N / s , 4);
   int Nb = (pow(4,Nl)-1)/3;
   int dim = pow(2,Nl-1);
