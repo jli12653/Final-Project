@@ -134,10 +134,10 @@ int main(int argc, char * argv[]) {
       dy = y[i] - (par*y_c+par/2.0);
       r = sqrt(dx*dx+dy*dy);
       b_c = dim*y_c + x_c;
-      grid[start+b_c]->Q += f[i];
+      grid[start+b_c].Q += f[i];
 
       for (int j = 0;j<q;j++){
-        grid[start+b_c]->multipole[j] += (-f[i]*pow(r,j+1))*1.0/(j+1);
+        grid[start+b_c].multipole[j] += (-f[i]*pow(r,j+1))*1.0/(j+1);
       }
     }
   
@@ -159,11 +159,11 @@ int main(int argc, char * argv[]) {
 
       for (int j=0;j<dimsq;j++){
         for (int k=0;k<4;k++){
-          grid[start+j]->Q += grid[startchid+j*4+k]->Q;
+          grid[start+j].Q += grid[startchid+j*4+k].Q;
           for (int l =0;l<q;l++){
-            grid[start+j]->local[l] += (-1.0*grid[startchid+j*4+k]->Q*pow(z0,l+1)/(l+1));
+            grid[start+j].local[l] += (-1.0*grid[startchid+j*4+k].Q*pow(z0,l+1)/(l+1));
             for(int o=0;o<=l;o++){
-              grid[start+j]->local[l] += binomialCoeff(l,o)*grid[startchid+j*4+k]->local[o]*pow(z0,l-k);
+              grid[start+j].local[l] += binomialCoeff(l,o)*grid[startchid+j*4+k].local[o]*pow(z0,l-k);
             }
           }
         }
