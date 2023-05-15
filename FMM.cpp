@@ -33,7 +33,6 @@ void box_initial(struct box b){
 
 
 
-
 int binomialCoeff(int n, int k)
 {
     // Base Cases
@@ -52,6 +51,22 @@ int log_a_to_base_b(int a, int b)
     return log2(a) / log2(b);
 }
 
+
+void M2L(int target, int boxid, double z0, int q, struct box* b){
+  for (int ll = 0; ll<q;ll++){
+    if (ll == 0){
+      grid[target].local[ll] += grid[boxid].Q*log(-z0);
+    }
+    else{
+      grid[target].local[ll] += -1.0*grid[boxid].Q/(ll*pow(z0,ll));
+    }
+    for (int lll = 0; lll<q;lll++){
+      grid[target].local[ll] += 1/pow(z0,ll)*binomialCoeff(ll+lll,lll)*grid[boxid].multipole[lll]*pow(-1,lll)/pow(z0,lll-1);
+    }
+  }
+
+  return;
+}
 
 
 int main(int argc, char * argv[]) {
