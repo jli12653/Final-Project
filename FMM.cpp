@@ -665,23 +665,54 @@ int main(int argc, char * argv[]) {
           }
 
           #pragma omp parallel for
-          for ( x_v =0;x_v<dim;x_v++){
             for (y_v = 0;y_v<2;y_v++){
+              for ( x_v =0;x_v<dim;x_v++){
+              stss = (x_v + dim* y_v)*(q+1);
               if (y_v == 1){
 
-                // only update y1
+                // only update y2
                 parid = x_v/2;
 
                 if(parid-1>=0){
                   fir = 2*(parid-1);
-
+                  target = start + fir + dim*y2;
+                  dy = 2.0;
+                  dx = fir - x_v;
+                  z0 = sqrt(dx*dx + dy*dy);
+                  M2L(target,z0,q,stss,rech,grid);
+                  fir +=1;
+                  target = start + fir + dim*y2;
+                  dx = fir - x_v;
+                  z0 = sqrt(dx*dx + dy*dy);
+                  M2L(target,z0,q,stss,rech,grid);
 
                 }
                 fir = 2*parid;
+                target = start + fir + dim*y2;
+                  dy = 2.0;
+                  dx = fir - x_v;
+                  z0 = sqrt(dx*dx + dy*dy);
+                  M2L(target,z0,q,stss,rech,grid);
+                  fir +=1;
+                  target = start + fir + dim*y2;
+                  dx = fir - x_v;
+                  z0 = sqrt(dx*dx + dy*dy);
+                  M2L(target,z0,q,stss,rech,grid);
 
                 if(parid+1<dim){
                   fir = 2*(parid+1);
+                  target = start + fir + dim*y2;
+                  dy = 2.0;
+                  dx = fir - x_v;
+                  z0 = sqrt(dx*dx + dy*dy);
+                  M2L(target,z0,q,stss,rech,grid);
+                  fir +=1;
+                  target = start + fir + dim*y2;
+                  dx = fir - x_v;
+                  z0 = sqrt(dx*dx + dy*dy);
+                  M2L(target,z0,q,stss,rech,grid);
                 }
+
               }
               else{
                 // only update y1, y2
@@ -689,14 +720,80 @@ int main(int argc, char * argv[]) {
 
                 if(parid-1>=0){
                   fir = 2*(parid-1);
+                  target = start + fir + dim*y1;
+                  dy = 2.0;
+                  dx = fir - x_v;
+                  z0 = sqrt(dx*dx + dy*dy);
+                  M2L(target,z0,q,stss,rech,grid);
+                  fir +=1;
+                  target = start + fir + dim*y1;
+                  dx = fir - x_v;
+                  z0 = sqrt(dx*dx + dy*dy);
+                  M2L(target,z0,q,stss,rech,grid);
+
+                  fir = 2*(parid-1);
+                  target = start + fir + dim*y2;
+                  dy = 3.0;
+                  dx = fir - x_v;
+                  z0 = sqrt(dx*dx + dy*dy);
+                  M2L(target,z0,q,stss,rech,grid);
+                  fir +=1;
+                  target = start + fir + dim*y2;
+                  dx = fir - x_v;
+                  z0 = sqrt(dx*dx + dy*dy);
+                  M2L(target,z0,q,stss,rech,grid);
 
 
                 }
                 fir = 2*parid;
+                target = start + fir + dim*y1;
+                  dy = 2.0;
+                  dx = fir - x_v;
+                  z0 = sqrt(dx*dx + dy*dy);
+                  M2L(target,z0,q,stss,rech,grid);
+                  fir +=1;
+                  target = start + fir + dim*y1;
+                  dx = fir - x_v;
+                  z0 = sqrt(dx*dx + dy*dy);
+                  M2L(target,z0,q,stss,rech,grid);
+
+                  fir = 2*parid;
+                  target = start + fir + dim*y2;
+                  dy = 3.0;
+                  dx = fir - x_v;
+                  z0 = sqrt(dx*dx + dy*dy);
+                  M2L(target,z0,q,stss,rech,grid);
+                  fir +=1;
+                  target = start + fir + dim*y2;
+                  dx = fir - x_v;
+                  z0 = sqrt(dx*dx + dy*dy);
+                  M2L(target,z0,q,stss,rech,grid);
 
 
                 if(parid+1<dim){
                   fir = 2*(parid+1);
+                  target = start + fir + dim*y1;
+                  dy = 2.0;
+                  dx = fir - x_v;
+                  z0 = sqrt(dx*dx + dy*dy);
+                  M2L(target,z0,q,stss,rech,grid);
+                  fir +=1;
+                  target = start + fir + dim*y1;
+                  dx = fir - x_v;
+                  z0 = sqrt(dx*dx + dy*dy);
+                  M2L(target,z0,q,stss,rech,grid);
+
+                  fir = 2*(parid+1);
+                  target = start + fir + dim*y2;
+                  dy = 3.0;
+                  dx = fir - x_v;
+                  z0 = sqrt(dx*dx + dy*dy);
+                  M2L(target,z0,q,stss,rech,grid);
+                  fir +=1;
+                  target = start + fir + dim*y2;
+                  dx = fir - x_v;
+                  z0 = sqrt(dx*dx + dy*dy);
+                  M2L(target,z0,q,stss,rech,grid);
 
                 }
               }
