@@ -274,6 +274,7 @@ int main(int argc, char * argv[]) {
         printf("Rank %d/%d posting the sending call on %s.\n", rank, p, processor_name);
           
         // Compute M2L for every box about the center of each box in there interaction list
+        int target;
         #pragma omp parallel for
         for (int j=0;j<dim;j++){
             for (int k=0; k<dim;k++){
@@ -327,7 +328,21 @@ int main(int argc, char * argv[]) {
                 if (y1 >=0 && y1 < dim){
                   for (int iii = x1;iii<=x3;iii++){
                     if (iii>=0 && iii<dim){
-
+                      target = start + iii + y1*dim;
+                      dx = iii - x_i;
+                      dy = y1 - y_i;
+                      z0 = sqrt(dx*dx+dy*dy);
+                      for (int ll = 0; ll<q;ll++){
+                        if (ll == 0){
+                          gird[target].local[ll] += grid[boxid].Q*log(-z0);
+                        }
+                        else{
+                          gird[target].local[ll] += -1.0*grid[boxid].Q/(ll*pow(z0,ll));
+                        }
+                        for (int lll = 0; lll<q;lll++){
+                          gird[target].local[ll] += 1/pow(z0,ll)*binomialCoeff(ll+lll,lll)*gird[boxid].multipole[lll]*pow(-1,lll)/pow(z0,lll-1);
+                        }
+                      }
                     }
                   }
                 }
