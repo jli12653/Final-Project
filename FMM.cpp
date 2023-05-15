@@ -259,7 +259,7 @@ int main(int argc, char * argv[]) {
             MPI_Isend(sendv, dim * 2 * (q+1), MPI_DOUBLE, 0, i+124, MPI_COMM_WORLD, &request_outv);
           }
           if(rank =3){
-           MPI_Isend(sendh,dim * 2 * (q+1), MPI_DOUBLE, 2, i+123, MPI_COMM_WORLD, &request_outh);
+            MPI_Isend(sendh,dim * 2 * (q+1), MPI_DOUBLE, 2, i+123, MPI_COMM_WORLD, &request_outh);
             MPI_Isend(sendv, dim * 2 * (q+1), MPI_DOUBLE, 1, i+124, MPI_COMM_WORLD, &request_outv);
           }
 
