@@ -328,6 +328,7 @@ int main(int argc, char * argv[]) {
                 if (y1 >=0 && y1 < dim){
                   for (int iii = x1;iii<=x3;iii++){
                     if (iii>=0 && iii<dim){
+
                       target = start + iii + y1*dim;
                       dx = iii - x_i;
                       dy = y1 - y_i;
@@ -343,6 +344,8 @@ int main(int argc, char * argv[]) {
                           grid[target].local[ll] += 1/pow(z0,ll)*binomialCoeff(ll+lll,lll)*grid[boxid].multipole[lll]*pow(-1,lll)/pow(z0,lll-1);
                         }
                       }
+
+
                     }
                   }
                 }
@@ -350,12 +353,46 @@ int main(int argc, char * argv[]) {
                   for (int iii = x1;iii<=x3;iii++){
                     if (iii>=0 && iii<dim){
 
+                      target = start + iii + y2*dim;
+                      dx = iii - x_i;
+                      dy = y2 - y_i;
+                      z0 = sqrt(dx*dx+dy*dy);
+                      for (int ll = 0; ll<q;ll++){
+                        if (ll == 0){
+                          grid[target].local[ll] += grid[boxid].Q*log(-z0);
+                        }
+                        else{
+                          grid[target].local[ll] += -1.0*grid[boxid].Q/(ll*pow(z0,ll));
+                        }
+                        for (int lll = 0; lll<q;lll++){
+                          grid[target].local[ll] += 1/pow(z0,ll)*binomialCoeff(ll+lll,lll)*grid[boxid].multipole[lll]*pow(-1,lll)/pow(z0,lll-1);
+                        }
+                      }
+
+
                     }
                   }
                 }
                 if (y3 >=0 && y3 < dim){
                   for (int iii = x1;iii<=x3;iii++){
                     if (iii>=0 && iii<dim){
+                        target = start + iii + y3*dim;
+                      dx = iii - x_i;
+                      dy = y3 - y_i;
+                      z0 = sqrt(dx*dx+dy*dy);
+                      for (int ll = 0; ll<q;ll++){
+                        if (ll == 0){
+                          grid[target].local[ll] += grid[boxid].Q*log(-z0);
+                        }
+                        else{
+                          grid[target].local[ll] += -1.0*grid[boxid].Q/(ll*pow(z0,ll));
+                        }
+                        for (int lll = 0; lll<q;lll++){
+                          grid[target].local[ll] += 1/pow(z0,ll)*binomialCoeff(ll+lll,lll)*grid[boxid].multipole[lll]*pow(-1,lll)/pow(z0,lll-1);
+                        }
+                      }
+
+
 
                     }
                   }
@@ -363,16 +400,68 @@ int main(int argc, char * argv[]) {
                 if (x1 >=0 && x1 < dim){
                   for (int jjj=y_i-1;jjj<=y_i+1;jjj++){
 
+
+
+
+                    target = start + x1 + jjj*dim;
+                      dx = x1 - x_i;
+                      dy = jjj - y_i;
+                      z0 = sqrt(dx*dx+dy*dy);
+                      for (int ll = 0; ll<q;ll++){
+                        if (ll == 0){
+                          grid[target].local[ll] += grid[boxid].Q*log(-z0);
+                        }
+                        else{
+                          grid[target].local[ll] += -1.0*grid[boxid].Q/(ll*pow(z0,ll));
+                        }
+                        for (int lll = 0; lll<q;lll++){
+                          grid[target].local[ll] += 1/pow(z0,ll)*binomialCoeff(ll+lll,lll)*grid[boxid].multipole[lll]*pow(-1,lll)/pow(z0,lll-1);
+                        }
+                      }
+
                   }
                 }
                 if (x2 >=0 && x2 < dim){
                   for (int jjj=y_i-1;jjj<=y_i+1;jjj++){
+
+                    target = start + x2 + jjj*dim;
+                      dx = x2 - x_i;
+                      dy = jjj - y_i;
+                      z0 = sqrt(dx*dx+dy*dy);
+                      for (int ll = 0; ll<q;ll++){
+                        if (ll == 0){
+                          grid[target].local[ll] += grid[boxid].Q*log(-z0);
+                        }
+                        else{
+                          grid[target].local[ll] += -1.0*grid[boxid].Q/(ll*pow(z0,ll));
+                        }
+                        for (int lll = 0; lll<q;lll++){
+                          grid[target].local[ll] += 1/pow(z0,ll)*binomialCoeff(ll+lll,lll)*grid[boxid].multipole[lll]*pow(-1,lll)/pow(z0,lll-1);
+                        }
+                      }
                     
                   }
                 }
                 if (x3 >=0 && x3 < dim){
                   for (int jjj=y_i-1;jjj<=y_i+1;jjj++){
                     
+                    target = start + x3 + jjj*dim;
+                      dx = x3 - x_i;
+                      dy = jjj - y_i;
+                      z0 = sqrt(dx*dx+dy*dy);
+                      for (int ll = 0; ll<q;ll++){
+                        if (ll == 0){
+                          grid[target].local[ll] += grid[boxid].Q*log(-z0);
+                        }
+                        else{
+                          grid[target].local[ll] += -1.0*grid[boxid].Q/(ll*pow(z0,ll));
+                        }
+                        for (int lll = 0; lll<q;lll++){
+                          grid[target].local[ll] += 1/pow(z0,ll)*binomialCoeff(ll+lll,lll)*grid[boxid].multipole[lll]*pow(-1,lll)/pow(z0,lll-1);
+                        }
+                      }
+
+
                   }
                 }
 
