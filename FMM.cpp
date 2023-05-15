@@ -530,7 +530,7 @@ int main(int argc, char * argv[]) {
           #pragma omp parallel for
           for ( x_h =0;x_h<2;x_h++){
             for (y_h = 0;y_h<dim;y_h++){
-              stss = (x_h + dim* y_h)*(q+1)
+              stss = (x_h + dim* y_h)*(q+1);
               if (x_h == 1){
 
                 // only update x2
