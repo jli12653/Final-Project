@@ -334,13 +334,13 @@ int main(int argc, char * argv[]) {
                       z0 = sqrt(dx*dx+dy*dy);
                       for (int ll = 0; ll<q;ll++){
                         if (ll == 0){
-                          gird[target].local[ll] += grid[boxid].Q*log(-z0);
+                          grid[target].local[ll] += grid[boxid].Q*log(-z0);
                         }
                         else{
-                          gird[target].local[ll] += -1.0*grid[boxid].Q/(ll*pow(z0,ll));
+                          grid[target].local[ll] += -1.0*grid[boxid].Q/(ll*pow(z0,ll));
                         }
                         for (int lll = 0; lll<q;lll++){
-                          gird[target].local[ll] += 1/pow(z0,ll)*binomialCoeff(ll+lll,lll)*gird[boxid].multipole[lll]*pow(-1,lll)/pow(z0,lll-1);
+                          grid[target].local[ll] += 1/pow(z0,ll)*binomialCoeff(ll+lll,lll)*grid[boxid].multipole[lll]*pow(-1,lll)/pow(z0,lll-1);
                         }
                       }
                     }
