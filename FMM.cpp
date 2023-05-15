@@ -192,6 +192,13 @@ int main(int argc, char * argv[]) {
       double* rech = (double*) malloc(dim * 2 * (q+1) * sizeof(double)); 
       double* recv = (double*) malloc(dim * 2 * (q+1) * sizeof(double));
 
+      for (int ij= 0;ij<dim * 2 * (q+1);ij++){
+        sendh[ij] = 0;
+        sendv[ij] = 0;
+        rech[ij] = 0;
+        recv[ij] = 0;
+      }
+
 
       
       MPI_Barrier(MPI_COMM_WORLD);
