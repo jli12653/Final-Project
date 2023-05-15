@@ -181,7 +181,7 @@ int main(int argc, char * argv[]) {
   int childx, childy,stss, x_i, y_i, boxid;
   int x1,x2,x3,y1,y2,y3;
 
-  #pragma omp parallel for
+  
     for(int i = 1; i<Nl;i++){
       start = (pow(4,i-1)-1)/3;
       dim = pow(2,i);
@@ -193,7 +193,7 @@ int main(int argc, char * argv[]) {
       double* recv = (double*) malloc(dim * 2 * (q+1) * sizeof(double));
 
 
-      /*
+      
       MPI_Barrier(MPI_COMM_WORLD);
 
           if(rank = 0){
@@ -226,15 +226,15 @@ int main(int argc, char * argv[]) {
 
 
              if (x_i/2 == dimpar - 1){
-              stss = childx + y_i*2;
+              stss = (childx + y_i*2)*(q+1);
               sendh[stss] = grid[boxid].Q; 
               for(int ii = 1;ii<=q;ii++){
                 sendh[stss+ii] = grid[boxid].multipole[ii-1];
               }
             }
             if (y_i/2 == dimpar - 1){
-              stss = x_i + childy*2;
-              sendh[stss] = grid[boxid].Q; 
+              stss = (x_i + childy*2)*(q+1);
+              sendv[stss] = grid[boxid].Q; 
               for(int ii = 1;ii<=q;ii++){
                 sendv[stss+ii] = grid[boxid].multipole[ii-1];
               }
@@ -263,7 +263,7 @@ int main(int argc, char * argv[]) {
             MPI_Isend(sendv, dim * 2 * (q+1), MPI_DOUBLE, 1, i+124, MPI_COMM_WORLD, &request_outv);
           }
 
-          */
+        
           
         // Compute M2L for every box about the center of each box in there interaction list
         #pragma omp parallel for
