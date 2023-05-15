@@ -533,16 +533,21 @@ int main(int argc, char * argv[]) {
               stss = (x_h + dim* y_h)*(q+1)
               if (x_h == 1){
 
-                // only update x1
+                // only update x2
                 parid = y_h/2;
 
                 if(parid-1>=0){
                   fir = 2*(parid-1);
-                  target = start + x1 + dim*fir;
+                  target = start + x2 + dim*fir;
                   dx = 2.0;
                   dy = fir - y_h;
                   z0 = sqrt(dx*dx + dy*dy);
-                  M2L(target,z0,q,grid,rech)
+                  M2L(target,z0,q,stss,rech,grid);
+                  fir +=1;
+                  target = start + x2 + dim*fir;
+                  dy = fir - y_h;
+                  z0 = sqrt(dx*dx + dy*dy);
+                  M2L(target,z0,q,stss,rech,grid);
 
                 }
                 fir = 2*parid;
