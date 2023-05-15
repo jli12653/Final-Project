@@ -52,16 +52,17 @@ int log_a_to_base_b(int a, int b)
 }
 
 
-void M2L(int target, int boxid, double z0, int q, struct box* grid){
+void M2L(int target, double z0, int q, int stss, double* mul, struct box* grid){
+#pragma omp parallel for  
   for (int ll = 0; ll<q;ll++){
     if (ll == 0){
-      grid[target].local[ll] += grid[boxid].Q*log(-z0);
+      grid[target].local[ll] += mul[stss+0]*log(-z0);
     }
     else{
-      grid[target].local[ll] += -1.0*grid[boxid].Q/(ll*pow(z0,ll));
+      grid[target].local[ll] += -1.0*mul[stss+0]/(ll*pow(z0,ll));
     }
-    for (int lll = 0; lll<q;lll++){
-      grid[target].local[ll] += 1/pow(z0,ll)*binomialCoeff(ll+lll,lll)*grid[boxid].multipole[lll]*pow(-1,lll)/pow(z0,lll-1);
+    for (int lll = 1; lll<q+1;lll++){
+      grid[target].local[ll] += 1/pow(z0,ll)*binomialCoeff(ll+lll,lll)*mul[stss+lll]*pow(-1,lll)/pow(z0,lll-1);
     }
   }
 
@@ -529,14 +530,19 @@ int main(int argc, char * argv[]) {
           #pragma omp parallel for
           for ( x_h =0;x_h<2;x_h++){
             for (y_h = 0;y_h<dim;y_h++){
-              if (x_h == 0){
+              stss = (x_h + dim* y_h)*(q+1)
+              if (x_h == 1){
 
                 // only update x1
                 parid = y_h/2;
 
                 if(parid-1>=0){
                   fir = 2*(parid-1);
-
+                  target = start + x1 + dim*fir;
+                  dx = 2.0;
+                  dy = fir - y_h;
+                  z0 = sqrt(dx*dx + dy*dy);
+                  M2L(target,z0,q,grid,rech)
 
                 }
                 fir = 2*parid;
@@ -544,6 +550,8 @@ int main(int argc, char * argv[]) {
                 if(parid+1<dim){
                   fir = 2*(parid+1);
                 }
+
+
               }
               else{
 
@@ -568,7 +576,7 @@ int main(int argc, char * argv[]) {
           #pragma omp parallel for
           for ( x_v =0;x_v<dim;x_v++){
             for (y_v = 0;y_v<2;y_v++){
-              if (y_v == 0){
+              if (y_v == 1){
 
                 // only update y1
                 parid = x_v/2;
