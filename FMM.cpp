@@ -203,8 +203,24 @@ int main(int argc, char * argv[]) {
       
       MPI_Barrier(MPI_COMM_WORLD);
 
-          
+          if(rank = 0){
+            MPI_Irecv(rech, dim * 2 * (q+1), MPI_DOUBLE, 1, i+123, MPI_COMM_WORLD, &request_inh);
+            MPI_Irecv(recv, dim * 2 * (q+1), MPI_DOUBLE, 2, i+124, MPI_COMM_WORLD, &request_inv);
+          }
+          if(rank = 1 ){
+            MPI_Irecv(rech, dim * 2 * (q+1), MPI_DOUBLE, 0, i+123, MPI_COMM_WORLD, &request_inh);
+            MPI_Irecv(recv, dim * 2 * (q+1), MPI_DOUBLE, 3, i+124, MPI_COMM_WORLD, &request_inv);
+          }
+          if(rank =2){
+            MPI_Irecv(rech, dim * 2 * (q+1), MPI_DOUBLE, 3, i+123, MPI_COMM_WORLD, &request_inh);
+            MPI_Irecv(recv, dim * 2 * (q+1), MPI_DOUBLE, 0, i+124, MPI_COMM_WORLD, &request_inv);
+          }
+          if(rank =3){
+            MPI_Irecv(rech, dim * 2 * (q+1), MPI_DOUBLE, 2, i+123, MPI_COMM_WORLD, &request_inh);
+            MPI_Irecv(recv, dim * 2 * (q+1), MPI_DOUBLE, 1, i+124, MPI_COMM_WORLD, &request_inv);
+          }
 
+        printf("Rank %d/%d posting the receiving call on %s.\n", rank, p, processor_name);
 
 
         #pragma omp parallel for
@@ -235,7 +251,7 @@ int main(int argc, char * argv[]) {
           }
          }
           
-
+        printf("Rank %d/%d finishes collecting data to send on %s.\n", rank, p, processor_name);
         
           
           if(rank = 0){
@@ -255,26 +271,7 @@ int main(int argc, char * argv[]) {
             MPI_Isend(sendv, dim * 2 * (q+1), MPI_DOUBLE, 1, i+124, MPI_COMM_WORLD, &request_outv);
           }
 
-
-
-          if(rank = 0){
-            MPI_Irecv(rech, dim * 2 * (q+1), MPI_DOUBLE, 1, i+123, MPI_COMM_WORLD, &request_inh);
-            MPI_Irecv(recv, dim * 2 * (q+1), MPI_DOUBLE, 2, i+124, MPI_COMM_WORLD, &request_inv);
-          }
-          if(rank = 1 ){
-            MPI_Irecv(rech, dim * 2 * (q+1), MPI_DOUBLE, 0, i+123, MPI_COMM_WORLD, &request_inh);
-            MPI_Irecv(recv, dim * 2 * (q+1), MPI_DOUBLE, 3, i+124, MPI_COMM_WORLD, &request_inv);
-          }
-          if(rank =2){
-            MPI_Irecv(rech, dim * 2 * (q+1), MPI_DOUBLE, 3, i+123, MPI_COMM_WORLD, &request_inh);
-            MPI_Irecv(recv, dim * 2 * (q+1), MPI_DOUBLE, 0, i+124, MPI_COMM_WORLD, &request_inv);
-          }
-          if(rank =3){
-            MPI_Irecv(rech, dim * 2 * (q+1), MPI_DOUBLE, 2, i+123, MPI_COMM_WORLD, &request_inh);
-            MPI_Irecv(recv, dim * 2 * (q+1), MPI_DOUBLE, 1, i+124, MPI_COMM_WORLD, &request_inv);
-          }
-
-        
+        printf("Rank %d/%d posting the sending call on %s.\n", rank, p, processor_name);
           
         // Compute M2L for every box about the center of each box in there interaction list
         #pragma omp parallel for
@@ -372,6 +369,10 @@ int main(int argc, char * argv[]) {
           MPI_Wait(&request_inh, &status);
           MPI_Wait(&request_outv, &status);
           MPI_Wait(&request_inv, &status);
+
+
+          printf("Rank %d/%d send and call action finished on %s.\n", rank, p, processor_name);
+
           int x_h,y_h,x_v,y_v;
 
           if(rank = 0){
