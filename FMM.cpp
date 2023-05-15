@@ -220,7 +220,7 @@ int main(int argc, char * argv[]) {
             MPI_Irecv(recv, dim * 2 * (q+1), MPI_DOUBLE, 1, i+124, MPI_COMM_WORLD, &request_inv);
           }
 
-        printf("Rank %d/%d posting the receiving call on %s.\n", rank, p, processor_name);
+        //printf("Rank %d/%d posting the receiving call on %s.\n", rank, p, processor_name);
 
 
         #pragma omp parallel for
@@ -251,7 +251,7 @@ int main(int argc, char * argv[]) {
           }
          }
           
-        printf("Rank %d/%d finishes collecting data to send on %s.\n", rank, p, processor_name);
+        //printf("Rank %d/%d finishes collecting data to send on %s.\n", rank, p, processor_name);
         
           
           if(rank == 0){
@@ -271,7 +271,7 @@ int main(int argc, char * argv[]) {
             MPI_Isend(sendv, dim * 2 * (q+1), MPI_DOUBLE, 1, i+124, MPI_COMM_WORLD, &request_outv);
           }
 
-        printf("Rank %d/%d posting the sending call on %s.\n", rank, p, processor_name);
+        //printf("Rank %d/%d posting the sending call on %s.\n", rank, p, processor_name);
           
         // Compute M2L for every box about the center of each box in there interaction list
         int target;
@@ -399,11 +399,9 @@ int main(int argc, char * argv[]) {
                 }
                 if (x1 >=0 && x1 < dim){
                   for (int jjj=y_i-1;jjj<=y_i+1;jjj++){
+                    if (jjj >=0 && jjj< dim){
 
-
-
-
-                    target = start + x1 + jjj*dim;
+                      target = start + x1 + jjj*dim;
                       dx = x1 - x_i;
                       dy = jjj - y_i;
                       z0 = sqrt(dx*dx+dy*dy);
@@ -419,12 +417,13 @@ int main(int argc, char * argv[]) {
                         }
                       }
 
+                    }
                   }
                 }
                 if (x2 >=0 && x2 < dim){
                   for (int jjj=y_i-1;jjj<=y_i+1;jjj++){
-
-                    target = start + x2 + jjj*dim;
+                    if (jjj >=0 && jjj< dim){
+                      target = start + x2 + jjj*dim;
                       dx = x2 - x_i;
                       dy = jjj - y_i;
                       z0 = sqrt(dx*dx+dy*dy);
@@ -439,13 +438,15 @@ int main(int argc, char * argv[]) {
                           grid[target].local[ll] += 1/pow(z0,ll)*binomialCoeff(ll+lll,lll)*grid[boxid].multipole[lll]*pow(-1,lll)/pow(z0,lll-1);
                         }
                       }
+
+                    }
                     
                   }
                 }
                 if (x3 >=0 && x3 < dim){
                   for (int jjj=y_i-1;jjj<=y_i+1;jjj++){
-                    
-                    target = start + x3 + jjj*dim;
+                    if (jjj >=0 && jjj< dim){
+                      target = start + x3 + jjj*dim;
                       dx = x3 - x_i;
                       dy = jjj - y_i;
                       z0 = sqrt(dx*dx+dy*dy);
@@ -462,6 +463,10 @@ int main(int argc, char * argv[]) {
                       }
 
 
+
+                    }
+
+
                   }
                 }
 
@@ -475,7 +480,7 @@ int main(int argc, char * argv[]) {
           MPI_Wait(&request_inv, &status);
 
 
-          printf("Rank %d/%d send and call action finished on %s.\n", rank, p, processor_name);
+          //printf("Rank %d/%d send and call action finished on %s.\n", rank, p, processor_name);
 
           int x_h,y_h,x_v,y_v;
 
