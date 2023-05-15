@@ -357,10 +357,10 @@ int main(int argc, char * argv[]) {
            } 
           }
 
-          // MPI_Wait(&request_outh, &status);
-          // MPI_Wait(&request_inh, &status);
-          // MPI_Wait(&request_outv, &status);
-          // MPI_Wait(&request_inv, &status);
+          MPI_Wait(&request_outh, &status);
+          MPI_Wait(&request_inh, &status);
+          MPI_Wait(&request_outv, &status);
+          MPI_Wait(&request_inv, &status);
           int x_h,y_h,x_v,y_v;
 
           if(rank = 0){
