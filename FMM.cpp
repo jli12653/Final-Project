@@ -203,19 +203,19 @@ int main(int argc, char * argv[]) {
       
       MPI_Barrier(MPI_COMM_WORLD);
 
-          if(rank = 0){
+          if(rank == 0){
             MPI_Irecv(rech, dim * 2 * (q+1), MPI_DOUBLE, 1, i+123, MPI_COMM_WORLD, &request_inh);
             MPI_Irecv(recv, dim * 2 * (q+1), MPI_DOUBLE, 2, i+124, MPI_COMM_WORLD, &request_inv);
           }
-          if(rank = 1 ){
+          if(rank == 1 ){
             MPI_Irecv(rech, dim * 2 * (q+1), MPI_DOUBLE, 0, i+123, MPI_COMM_WORLD, &request_inh);
             MPI_Irecv(recv, dim * 2 * (q+1), MPI_DOUBLE, 3, i+124, MPI_COMM_WORLD, &request_inv);
           }
-          if(rank =2){
+          if(rank == 2){
             MPI_Irecv(rech, dim * 2 * (q+1), MPI_DOUBLE, 3, i+123, MPI_COMM_WORLD, &request_inh);
             MPI_Irecv(recv, dim * 2 * (q+1), MPI_DOUBLE, 0, i+124, MPI_COMM_WORLD, &request_inv);
           }
-          if(rank =3){
+          if(rank == 3){
             MPI_Irecv(rech, dim * 2 * (q+1), MPI_DOUBLE, 2, i+123, MPI_COMM_WORLD, &request_inh);
             MPI_Irecv(recv, dim * 2 * (q+1), MPI_DOUBLE, 1, i+124, MPI_COMM_WORLD, &request_inv);
           }
@@ -254,19 +254,19 @@ int main(int argc, char * argv[]) {
         printf("Rank %d/%d finishes collecting data to send on %s.\n", rank, p, processor_name);
         
           
-          if(rank = 0){
+          if(rank == 0){
             MPI_Isend(sendh,dim * 2 * (q+1), MPI_DOUBLE, 1, i+123, MPI_COMM_WORLD, &request_outh);
             MPI_Isend(sendv, dim * 2 * (q+1), MPI_DOUBLE, 2, i+124, MPI_COMM_WORLD, &request_outv);
           }
-          if(rank = 1 ){
+          if(rank == 1 ){
             MPI_Isend(sendh,dim * 2 * (q+1), MPI_DOUBLE, 0, i+123, MPI_COMM_WORLD, &request_outh);
             MPI_Isend(sendv, dim * 2 * (q+1), MPI_DOUBLE, 3, i+124, MPI_COMM_WORLD, &request_outv);
           }
-          if(rank =2){
+          if(rank ==2){
             MPI_Isend(sendh,dim * 2 * (q+1), MPI_DOUBLE, 3, i+123, MPI_COMM_WORLD, &request_outh);
             MPI_Isend(sendv, dim * 2 * (q+1), MPI_DOUBLE, 0, i+124, MPI_COMM_WORLD, &request_outv);
           }
-          if(rank =3){
+          if(rank ==3){
             MPI_Isend(sendh,dim * 2 * (q+1), MPI_DOUBLE, 2, i+123, MPI_COMM_WORLD, &request_outh);
             MPI_Isend(sendv, dim * 2 * (q+1), MPI_DOUBLE, 1, i+124, MPI_COMM_WORLD, &request_outv);
           }
@@ -375,25 +375,25 @@ int main(int argc, char * argv[]) {
 
           int x_h,y_h,x_v,y_v;
 
-          if(rank = 0){
+          if(rank == 0){
             x1 = dim-2;
             x2 = dim-1;
             y1 = dim-2;
             y2 = dim-1;
           }
-          if(rank = 1 ){
+          if(rank == 1 ){
             x1 = 0;
             x2 = 1;
             y1 = dim-2;
             y2 = dim-1;
           }
-          if(rank =2){
+          if(rank ==2){
             x1 = dim-2;
             x2 = dim-1;
             y1 = 0;
             y2 = 1;
           }
-          if(rank =3){
+          if(rank ==3){
             x1 = 0;
             x2 = 1;
             y1 = 0;
@@ -535,9 +535,9 @@ int main(int argc, char * argv[]) {
   /* timing */
   MPI_Barrier(MPI_COMM_WORLD);
   double elapsed = MPI_Wtime() - tt;
-  //if (rank == 1) {
+  if (rank == 0) {
     printf("Time elapsed is %f seconds.\n", elapsed);
-  //}
+  }
   
 
   free(x);
