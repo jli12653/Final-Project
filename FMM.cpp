@@ -52,7 +52,7 @@ int log_a_to_base_b(int a, int b)
 }
 
 
-void M2L(int target, int boxid, double z0, int q, struct box* b){
+void M2L(int target, int boxid, double z0, int q, struct box* grid){
   for (int ll = 0; ll<q;ll++){
     if (ll == 0){
       grid[target].local[ll] += grid[boxid].Q*log(-z0);
