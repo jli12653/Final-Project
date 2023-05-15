@@ -837,10 +837,9 @@ int main(int argc, char * argv[]) {
 
       for (int j=0;j<dimsq;j++){
         for (int k=0;k<4;k++){
-          for (int l =0;l<q;l++){
-            grid[startchid+j*4+k].local[l] += (-1.0*grid[start+j].Q*pow(z0,l+1)/(l+1));
-            for(int o=0;o<=l;o++){
-              grid[startchid+j*4+k].local[l] += binomialCoeff(l,o)*grid[start+j].local[o]*pow(z0,l-k);
+          for (int l =0;l<q-1;l++){
+            for(int o=q-l-2;o<q-1;o++){
+              grid[startchid+j*4+k].local[l] += grid[start+j].local[o]-z0*grid[start+j].local[o+1];
             }
           }
         }
