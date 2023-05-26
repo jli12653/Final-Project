@@ -25,7 +25,7 @@ void kernel_eval(long N, const double* x, const double* y, const double* z, cons
 }
 
 int main(int argc, char** argv) {
-  long N = 400000;
+  long N = 40000;
 
   double* x = (double*) malloc(N * sizeof(double));
   double* y = (double*) malloc(N * sizeof(double));
