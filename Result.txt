@@ -1,0 +1,11 @@
+N = 10000
+FMM
+Time elapsed is 0.016410 seconds.
+Standard
+Evaluation time: 1.773828 seconds
+
+N = 100000
+FMM
+Time elapsed is 0.220916 seconds.
+Standard
+Evaluation time: 211.596273 seconds
