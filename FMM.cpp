@@ -88,7 +88,7 @@ int main(int argc, char * argv[]) {
   printf("Rank %d/%d running on %s.\n", rank, p, processor_name);
   
 
-  N = 1000000;
+  N = 10000;
   s = 10;
   int q = 6;
   int Nl = log_a_to_base_b ( N / s , 4);
